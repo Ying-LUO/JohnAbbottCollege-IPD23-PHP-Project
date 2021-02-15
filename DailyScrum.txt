@@ -4,3 +4,10 @@ Ying:
 Finished the proposal
 
 Khalil
+
+Day 02 / 2021-02-15
+============================
+Ying:
+Finished database creation on server
+
+Khalil
