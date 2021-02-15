@@ -3,7 +3,20 @@ Day 01 / 2021-02-12
 Ying:
 Finished the proposal
 
+
+
 Khalil
+
+1- Todo:
+	*Finished the proposal
+	*start creating user stories on Trello
+	*sub-domain setup
+
+2- Need assistant
+    I am Ok for now.
+
+================================================
+=======
 
 Day 02 / 2021-02-15
 ============================
@@ -11,3 +24,4 @@ Ying:
 Finished database creation on server
 
 Khalil
+
