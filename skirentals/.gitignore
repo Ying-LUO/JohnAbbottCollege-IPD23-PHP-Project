@@ -1,0 +1,4 @@
+tmplcache/
+vendor/
+.vscode
+sftp.josn

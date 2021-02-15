@@ -1,0 +1,10 @@
+{
+    "name": "khalil/slim-first",
+    "require": {
+        "slim/slim": "3.12.3",
+        "sergeytsalkov/meekrodb": "^2.3",
+        "twig/twig": "^2.14",
+        "monolog/monolog": "^2.2",
+        "slim/twig-view": "^2.5"
+    }
+}
