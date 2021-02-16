@@ -4,17 +4,17 @@
 
 require_once 'vendor/autoload.php';
 // if (strpos($_SERVER['HTTP_HOST'], "ipd23.com") !== false) {
-//     //hosting on ipd23.com database connection setup
-    DB::$dbName = 'cp4996_skirentals';
-    DB::$user = 'cp4996_skirentals';
-    DB::$password = 'OS5a2m]qDfdK';
+// //     //hosting on ipd23.com database connection setup
+//     DB::$dbName = 'cp4996_skirentals';
+//     DB::$user = 'cp4996_skirentals';
+//     DB::$password = 'OS5a2m]qDfdK';
 // } else {// local computer
-    // DB::$dbName = 'day02people';
-    // DB::$user = 'day02people';
-    // DB::$password = 'sIjlCel0a0oENBhu';
-    // DB::$host = 'localhost';
-    // DB::$port = 3333;
-// }
+    DB::$dbName = 'skirentalphp';
+    DB::$user = 'skirentalphp';
+    DB::$password = 'fu83K9WJLKSAbaob';
+    DB::$host = 'localhost';
+    DB::$port = 3333;
+//}
 
 // Create and configure Slim app
 $config = ['settings' => [
@@ -42,41 +42,49 @@ $container['view'] = function ($c) {
 };
 
 // Define app routes below
-
+//display home page
 $app->get('/home',function ($request, $response, $args){
     
     return $this->view-> render($response, 'home.html.twig');
 });
 
-// $app->post('/home',function ($request, $response, $args){
-//     $name = $request->getParam('name');
-//     $age = $request->getParam('age');
+//display addequip form
+$app->get('/addequip',function ($request, $response, $args){
     
-//     $errorList = [];
-//     if (strlen($name) < 2 || strlen($name) > 50) {
-//         $errorList[] = "Name must be 2-50 characters long";
-//         $name = "";
-//     }
-//     if (filter_var($age, FILTER_VALIDATE_INT) === false || $age < 0 || $age > 150) {
-//         $errorList[] = "Age must be a number between 0 and 150";
-//         $age = "";
-//     }
-//     //
-//     if($errorList){
-//         $valueList = ['name'=>$name, 'age'=>$age];
-//         return $this->view-> render($response, 'home.html.twig', ['errorListZ' => $errorList, 'v' => $valueList]);
-//     } else {
-//         DB::insert('people', [
-//             'name' => $name,
-//             'age' => $age
-//           ]);
-//         return $this->view-> render($response, 'home_success.html.twig');
-//     }
+    return $this->view-> render($response, 'addequip.html.twig');
+});
 
 
+
+$app->post('/addequip', function ($request, $response, $args) {
+    $equipName = $request->getParam('equipname');
+    $category = $request->getParam('category');
+    $itemsInStock = $request->getParam('itemsInStock');
+    $description = $request->getParam('description');
+    //
+    $errorList = [];
+    if (strlen($description) < 2 || strlen($description) > 2000) {
+        $errorList[] = "Item description must be 2-2000 characters long";
+    }
+    if (preg_match('/^[a-zA-Z0-9 ,\.-]{2,100}$/', $equipName) !== 1) {
+        $errorList[] = "Seller's name must be 2-100 characters long made up of letters, digits, space, comma, dot, dash";
+    }
+
     
-    
-// });
+    if (!is_numeric($itemsInStock) || $itemsInStock < 0 || $itemsInStock > 99999999.99) {
+        $errorList[] = "Initial bid price must be a number between 0 and 99,999,999.99";
+    }
+    //
+    $valuesList = ['equipDescription' => $description, 'equipName' => $equipName, 
+                    'category' => $category, 'inStock' => $itemsInStock];
+    if ($errorList) { // STATE 2: errors - redisplay the form
+        return $this->view->render($response, 'addequip.html.twig', ['errorList' => $errorList, 'v' => $valuesList]);
+    } else { // STATE 3: success
+        DB::insert('equipments', $valuesList);
+        
+        return $this->view->render($response, 'addequip_success.html.twig');
+    }
+});
 
 
 

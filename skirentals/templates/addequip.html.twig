@@ -1,0 +1,79 @@
+{% extends "master.html.twig" %}
+
+{% block title %}New auction{% endblock %} 
+
+{% block content %}
+
+<div class="container contact">
+	<div class="row">
+		<div class="col-md-3">
+			<div class="contact-info">
+				<img src="/images/skiing-solid.svg" alt="image"/>
+				<h3>Add Product</h3>
+				<p>To add new product select the right category and upload the product image. Also all the feilsd is required !</p>
+			</div>
+		</div>
+        <form method="POST" class="col-md-9">
+            
+                <div class="contact-form">
+                    <div class="form-group">
+                    <label class="control-label col-sm-3" for="itemname">Product Name:</label>
+                    <div class="col-sm-10">          
+                        <input type="text" class="form-control" id="itemname" placeholder="Enter Item Name" name="equipname">
+                    </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group mb-3 col-sm-10">
+                            <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Category</label>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect01" name="category">
+                            <option selected>Choose...</option>
+                            <option value="Ski Boots">Ski Boots</option>
+                            <option value="Ski Bindings">Ski Bindings</option>
+                            <option value="Goggles">Goggles</option>
+                            <option value="Helmets">Helmets</option>
+                            <option value="Snow Board Boots">Snow Board Boots</option>
+                            <option value="Snow Board Bindings">Snow Board Binding</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                    <label class="control-label col-sm-2" for="instock">In-Stock:</label>
+                    <div class="col-sm-10">          
+                        <input type="number" class="form-control" id="instock" placeholder="Enter number of items in-stock" name="itemsInStock">
+                    </div>
+                    </div>
+                    
+
+                    <div class="input-group mb-3 col-sm-10">
+                        <div class="input-group-prepend">
+                        <label class="input-group-text" id="inputGroupFile">Upload Image</label>
+                        </div>
+                        <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                        <span class="custom-file-label" for="inputGroupFile01">Choose file</span>
+                        </div>
+                    </div>
+                    
+
+                    <div class="form-group">
+                    <label class="control-label col-sm-2" for="description1">Description:</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="5" id="description1" name="description"></textarea>
+                    </div>
+                    </div>
+                    <div class="form-group">        
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                    </div>
+                </div>
+           
+        </form>
+	</div>
+</div>
+
+
+{% endblock content %}
