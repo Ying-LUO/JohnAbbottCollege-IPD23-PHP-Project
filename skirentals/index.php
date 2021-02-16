@@ -3,6 +3,23 @@
 //session_start();
 
 require_once 'vendor/autoload.php';
+
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+// create a log channel
+$log = new Logger('main');
+$log->pushHandler(new StreamHandler('logs/everything.log', Logger::DEBUG));
+$log->pushHandler(new StreamHandler('logs/errors.log', Logger::ERROR));
+
+$log->pushProcessor();
+
+$log->pushProcessor(function ($record) {
+    //$record['extra']['user'] = isset($_SESSION['user']) ? $_SESSION['user']['username'] : '=anonymous=';
+    //$record['extra']['ip'] = $_SERVER['REMOTE_ADDR'];
+    return $record;
+});
+
 // if (strpos($_SERVER['HTTP_HOST'], "ipd23.com") !== false) {
 // //     //hosting on ipd23.com database connection setup
 //     DB::$dbName = 'cp4996_skirentals';
