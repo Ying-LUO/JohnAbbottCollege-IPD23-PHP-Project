@@ -1,0 +1,29 @@
+{% extends "master.html.twig" %}
+
+{% block title %}
+    Welcome to ski Rentals
+{% endblock title %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- Index page css-->
+    <link rel="stylesheet" type="text/css" href="/styles/styles.css" />
+{% endblock stylesheets %}
+
+{% block content %}
+    <h1>Welcome to Ski Rentals!</h1>
+    {% for equip in equipmentList %}
+    <div class="card" style="width: 18rem;">
+        <img src="{{ equip.photo }}" class="card-img-top" alt="{{ equip.photo }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ equip.equipName }}</h5>
+            <p class="card-text">{{ equip.equipDescription }}</p>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Rental By Month: {{ equip. }} $</a>
+                <a class="dropdown-item" href="#">Rental By Season: {{ equip. }} $</a>
+            </div>
+            <a href="#" class="btn btn-primary">Add to Cart</a>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock content %}
