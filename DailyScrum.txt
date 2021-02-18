@@ -21,7 +21,104 @@ Khalil
 Day 02 / 2021-02-15
 ============================
 Ying:
-Finished database creation on server
+1- Todo:
+	Finished database creation on server
+2- Done
+	Finished the proposal
+3- Need assistant
+
+Khalil
+	
+1- Todo:
+	*create master template
+	*create index file
+	*create add equipment form
+	*study file upload in slim
+2- Done
+	*Finished the proposal
+	*start creating user stories on Trello
+	*sub-domain setup
+
+3- Need assistant
+	I am Ok for now.
+
+Day 03 / 2021-02-16
+============================
+Ying:
+1- Todo:
+	1. split index.php into separated files
+	2. re-organize code structure
+	3. add user/admin/register/password templates and php
+
+2- Done
+	Finished database creation on server
+3- Need assistant
+	
 
 Khalil
 
+1- Todo:
+	* upload images
+	*create tamplate for product line
+	
+2- Done
+	*create master template
+	*create index file
+	*create add equipment form
+	*study file upload in slim
+
+3- Need assistant
+	I am Ok for now.
+
+
+Day 04 / 2021-02-17
+============================
+Ying:
+1- Todo:
+	1. study the video of password reset
+
+2- Done
+	1. split index.php into separated files
+	2. re-organize code structure
+	3. add user/admin/register/password templates and php
+3- Need assistant
+
+Khalil
+
+1- Todo:
+	* fix upload images
+	*create product lines template
+	*create tamplate for each product line
+	
+2- Done
+	
+	*create product lines template
+	
+
+3- Need assistant
+	I need help with image upload
+
+
+Day 05 / 2021-02-18
+============================
+Ying:
+1- Todo:
+	
+2- Done
+	1. study the video of password reset
+3- Need assistant
+
+Khalil
+
+1- Todo:
+	* fix upload images
+	* create shopping cart
+	
+2- Done
+	
+	*create product lines template
+	*create tamplate for each product line
+	
+
+3- Need assistant
+	I need help with image upload

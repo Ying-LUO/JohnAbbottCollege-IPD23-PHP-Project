@@ -17,27 +17,27 @@ $log->pushProcessor(function ($record) {
     return $record;
 });
 
-if (strpos($_SERVER['HTTP_HOST'], "ipd23.com") !== false) {
-    //     //hosting on ipd23.com database connection setup
-    DB::$dbName = 'cp4996_skirentals';
-    DB::$user = 'cp4996_skirentals';
-    DB::$password = 'OS5a2m]qDfdK';
+// if (strpos($_SERVER['HTTP_HOST'], "ipd23.com") !== false) {
+//     //     //hosting on ipd23.com database connection setup
+//     DB::$dbName = 'cp4996_skirentals';
+//     DB::$user = 'cp4996_skirentals';
+//     DB::$password = 'OS5a2m]qDfdK';
 
-    //} else {// local computer
+//     } else {// local computer
     // khalil
     DB::$dbName = 'skirentalphp';
     DB::$user = 'skirentalphp';
     DB::$password = 'fu83K9WJLKSAbaob';
     DB::$host = 'localhost';
     DB::$port = 3333;
-} else {
-    // ying
-    DB::$dbName = 'skirentalslocal';
-    DB::$user = 'skirentalslocal';
-    DB::$password = 'hV47fGeFuCSKOsQO';
-    DB::$host = 'localhost';
-    DB::$port = 3333;
-}
+// } else {
+//     // ying
+//     DB::$dbName = 'skirentalslocal';
+//     DB::$user = 'skirentalslocal';
+//     DB::$password = 'hV47fGeFuCSKOsQO';
+//     DB::$host = 'localhost';
+//     DB::$port = 3333;
+//}
 
 DB::$error_handler = 'db_error_handler'; // runs on mysql query errors
 DB::$nonsql_error_handler = 'db_error_handler'; // runs on library errors (bad syntax, etc)

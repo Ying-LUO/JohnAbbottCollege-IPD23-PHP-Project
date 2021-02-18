@@ -2,3 +2,5 @@ tmplcache/
 vendor/
 .vscode
 sftp.josn
+/logs
+/uploads
