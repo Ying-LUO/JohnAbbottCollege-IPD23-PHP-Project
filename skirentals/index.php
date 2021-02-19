@@ -5,7 +5,6 @@ require_once "vendor/autoload.php";
 require_once "init.php";
 
 
-
 /*
 // STATE 1: first display of the form
 $app->get('/', function ($request, $response, $args) {
