@@ -1,7 +1,8 @@
 <?php
-session_start();
+
 
 require_once "vendor/autoload.php";
+//session_start();
 require_once "init.php";
 
 
@@ -29,6 +30,7 @@ $app->get('/', function ($request, $response, $args) {
 // Define app routes below
 require_once 'register.php';
 require_once 'login.php';
+require_once 'logout.php';
 require_once "admin.php";
 require_once "addequip.php";
 require_once "skibindings.php";

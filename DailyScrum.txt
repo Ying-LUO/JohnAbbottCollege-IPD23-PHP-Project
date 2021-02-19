@@ -112,7 +112,9 @@ Khalil
 
 1- Todo:
 	* fix upload images
-	* create shopping cart
+	* redirection
+	* Try fix login and session
+	* working on some styles.
 	
 2- Done
 	
@@ -122,3 +124,37 @@ Khalil
 
 3- Need assistant
 	I need help with image upload
+
+
+Day 06 / 2021-02-19
+============================
+Ying:
+1- Todo:
+	*fix the problem in register.php
+	*fix the ajax error
+
+
+2- Done
+	*refactor the format of login/register form
+
+3- Need assistant
+
+	*blocked by the issue in register and ajax, need help to fix
+
+
+Khalil
+
+1- Todo:
+	* fix login and session
+	* create shopping cart
+	
+2- Done
+	
+	* fix upload images
+	* redirection
+	* working on some styles.
+
+	
+
+3- Need assistant
+	

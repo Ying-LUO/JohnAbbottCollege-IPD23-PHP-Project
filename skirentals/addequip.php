@@ -119,7 +119,7 @@
         }
         // echo "\n\nimage info\n";
         // print_r($info);
-        if ($info[0] < 200 || $info[0] > 1000 || $info[1] < 200 || $info[1] > 1000) {
+        if ($info[0] < 130 || $info[0] > 1000 || $info[1] < 130 || $info[1] > 1000) {
             return "Width and height must be within 200-1000 pixels range";
         }
         $ext = "";

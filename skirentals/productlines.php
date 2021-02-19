@@ -3,6 +3,7 @@
     require_once 'vendor/autoload.php';
     require_once 'init.php';
 
+    
    
 
     //display Home
@@ -16,6 +17,6 @@
         $photo = $equip['photo'];
         }
 
-        return $this->view->render($response, 'productlines.html.twig',['ProductLines' => $ProductLines]);
+        return $this->view->render($response, 'productlines.html.twig',['ProductLines' => $ProductLines], ['userSession' => $_SESSION['user'] ] );
     });
 

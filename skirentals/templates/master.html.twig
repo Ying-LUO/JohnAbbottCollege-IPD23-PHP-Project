@@ -80,10 +80,10 @@
                   <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
               </form>
               <ul class="navbar-nav ">
-                  {% block header %}
+                  {# {% block header %} #}
                       <div class="d-flex ">
                           {% if session.user %}
-                              <span>You are logged in as <b>{{ session.user.name }}</b></span>
+                              {# <span>You are logged in as <b>{{ app.user['name'] }}</b></span> #}
                               <li class="nav-item">
                                   <a class="nav-link" href="#">
                                       <i class="fa fa-user-circle" aria-hidden="true"></i>
@@ -114,7 +114,7 @@
                               </li>
                           {% endif %}
                       </div>
-                  {% endblock header %}
+                  {# {% endblock header %} #}
               </ul>
 
           </div>
