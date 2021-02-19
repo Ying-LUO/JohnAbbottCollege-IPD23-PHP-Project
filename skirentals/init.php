@@ -1,9 +1,15 @@
 <?php
 
-require_once 'vendor/autoload.php';
+
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+
+require_once 'vendor/autoload.php';
+
+session_start();
+
+
 
 // create a log channel
 $log = new Logger('main');
@@ -74,7 +80,7 @@ $app = new \Slim\App($config);
 
 // Fetch DI Container
 $container = $app->getContainer();
-
+$container['upload_directory'] = __DIR__ . '/uploads';
 // Register Twig View helper
 $container['view'] = function ($c) {
     $view = new \Slim\Views\Twig(dirname(__FILE__) . '/templates', [
@@ -114,4 +120,6 @@ function getAndClearFlashMessage() {
     }
     return "";
 }
+
+
 

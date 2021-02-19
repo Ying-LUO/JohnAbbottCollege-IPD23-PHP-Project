@@ -21,7 +21,7 @@ $app->post('/login', function ($request, $response, $args) use ($log) {
     $email = $request->getParam('email');
     $password = $request->getParam('password');
     //
-    $record = DB::queryFirstRow("SELECT id,email,password FROM users WHERE email=%s", $email);
+    $record = DB::queryFirstRow("SELECT id ,email , password, username FROM users WHERE email=%s", $email);
     $loginSuccess = false;
     if ($record) {
         global $passwordPepper;
@@ -38,13 +38,13 @@ $app->post('/login', function ($request, $response, $args) use ($log) {
     }
     //
     if (!$loginSuccess) {
-        $log->info(sprintf("Login failed for email %s from %s", $email, $_SERVER['REMOTE_ADDR']));
+        $log->info(sprintf("Login failed for email %s and %s from %s", $email, $password, $_SERVER['REMOTE_ADDR']));
         return $this->view->render($response, 'login.html.twig', [ 'error' => true ]);
     } else {
         unset($record['password']); // for security reasons remove password from session
         $_SESSION['user'] = $record; // remember user logged in
         $log->debug(sprintf("Login successful for email %s, uid=%d, from %s", $email, $record['id'], $_SERVER['REMOTE_ADDR']));
-        return $this->view->render($response, 'login_success.html.twig', ['userSession' => $_SESSION['user'] ] );
+        return $this->view->render($response, '/login_success.html.twig', ['userSession' => $_SESSION['user'] ] );
     }
 });
 

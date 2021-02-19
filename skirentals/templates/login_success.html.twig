@@ -2,8 +2,18 @@
 
 {% block title %}User Login{% endblock %}
 
+{% block head %}
+    
+    <script>
+       window.location.href = "/productlines"; 
+    </script>
+    
+{% endblock head %} 
+
 {% block content %}
+<p>{{userSession['username']}} login successfully. You will be redirected or <a href="/productlines">Click to continue</a>. </p>
+    
+{% endblock content %} 
 
-    <p>User login successfully. <a href="/">Click to continue</a>. </p>
 
-{% endblock content %}
+    
