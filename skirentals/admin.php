@@ -17,17 +17,3 @@
         }
         return $this->view->render($response, 'register.html.twig');
     });
-
-    // state 2&3: receiving submission
-    $app->post('/register',function($request, $response, $args){
-        $name = $request->getParam('username');
-        $firstName = $request->getParam('firstName');
-        $lastName = $request->getParam('lastName');
-        $email = $request->getParam('email');
-        $pass1= $request->getParam('pass1');
-        $pass2 = $request->getParam('pass2');
-
-
-
-    });
-

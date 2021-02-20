@@ -12,7 +12,7 @@ $app->get('/register',function ($request, $response, $args){
     return $this->view-> render($response, 'register.html.twig');
 });
 
-/*
+
 $app->post('/register', function ($request, $response, $args) use ($log) {
     if (isset($_SESSION['user'])) {
         return $response->withHeader('Location', '/');
@@ -108,7 +108,7 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
 
 });
 
-$app->get('/register/isemailtaken/[{email}]', function (Request $request, Response $response, array $args){
+$app->get('/register/isemailtaken/{email}', function ($request, $response, array $args) use ($log) {
     $error = '';
 
     if(isset($args['email'])){
@@ -144,4 +144,4 @@ function verifyPasswordQuality($password) {
                             and one number or special character.";
     }
     return TRUE;
-}*/
+}
