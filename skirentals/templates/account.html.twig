@@ -1,0 +1,166 @@
+{% extends "master.html.twig" %}
+
+{% block head %}
+    {#
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"> #}
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/addequip_style.css" />
+    <link rel="stylesheet" href="/styles/styles.css" />
+{% endblock %}
+
+{% block title %}
+    My Account
+{% endblock title %}
+
+{% block content %}
+    <div class="py-5 container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="contact-info">
+                    <img src="/images/skiing-solid.svg" alt="image"/>
+                    <h3>My Account</h3>
+                    <button class="btn btn-light" id="enableUpdate">Update My Profile</button>
+                </div>
+            </div>
+            <form method="POST" class="col-md-9" read-only>
+                <ul class="errorList">
+                    {% if error %}
+                        <li>{{ error }}</li>
+                    {% endif %}
+                </ul>
+                <div class="form-row" >
+                    <div class="col-md-6 mb-3">
+                        <label for="inputFirstname">First name</label>
+                        <input name="firstName" type="text" class="form-control" id="inputFirstname" placeholder="First name" value="Mark" required>
+                        <div class="invalid-feedback d-none">
+                            Invalid First Name
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3" >
+                        <label for="inputLastname">Last name</label>
+                        <input name="lastName" type="text" class="form-control" id="inputLastname" placeholder="Last name" value="Otto" required>
+                        <div class="invalid-feedback d-none">
+                            Invalid Last Name
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="inputUsername">Username</label>
+                        <input name="userName" type="text" class="form-control" id="inputUsername" placeholder="User Name" value="MarkOtto" required>
+                        <div class="invalid-feedback d-none" id="isUserNameTaken">
+                            This username is taken, please choose another one
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="inputEmail">Email Address</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputEmail">@</span>
+                            </div>
+                            <input name="email" type="email" class="form-control" id="validationServerEmail" placeholder="Email Address" aria-describedby="inputGroupPrepend3" required>
+                            <div class="invalid-feedback d-none" id="isEmailTaken">
+                                This email address is taken, please try to login
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="Phone">Phone Number</label>
+                        <input name="phone" type="tel" class="form-control" id="Phone" placeholder="1-(555)-555-5555" required>
+                        <div class="invalid-feedback d-none">
+                            Invalid Phone number
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="inputPassword">Password</label>
+                        <input name="pass1" type="password" class="form-control" id="inputPassword" placeholder="Password" required>
+                        <div class="invalid-feedback d-none">
+                            Password invalid
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input name="pass2" type="password" class="form-control" id="confirmPassword" placeholder="Password" required>
+                        <div class="invalid-feedback d-none">
+                            Password not match
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="inputAddress">Address</label>
+                        <input name="street" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" required>
+                        <div class="invalid-feedback d-none">
+                            Please provide a valid address.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="inputCity">City</label>
+                        <input name="city" type="text" class="form-control" id="inputCity" placeholder="City" required>
+                        <div class="invalid-feedback d-none">
+                            Please provide a valid city.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="inputProvince">Province</label>
+                        <select name="province" id="inputProvince" class="form-control" required>
+                            <option value="AB" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>AB	Alberta</option>
+                            <option value="BC" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>BC	British Columbia</option>
+                            <option value="MB" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>MB	Manitoba</option>
+                            <option value="NB" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>NB	New Brunswick</option>
+                            <option value="NL" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>NL	Newfoundland and Labrador</option>
+                            <option value="NT" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>NT	Northwest Territories</option>
+                            <option value="NS" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>NS	Nova Scotia	Nouvelle-Écosse</option>
+                            <option value="NU" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>NU	Nunavut</option>
+                            <option value="ON" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>ON	Ontario</option>
+                            <option value="PE" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>PE	Prince Edward Island</option>
+                            <option value="QC" selected>QC	Québec</option>
+                            <option value="SK" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>SK	Saskatchewan</option>
+                            <option value="YT" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>YT	Yukon</option>
+                        </select>
+                        <div class="invalid-feedback d-none">
+                            Please choose a valid province.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="inputPostalCode">Postal Code</label>
+                        <input name="postCode" type="text" class="form-control" id="inputPostalCode" placeholder="A1B 2C3" required>
+                        <div class="invalid-feedback d-none">
+                            Please provide a valid postal code.
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+            $('input[name=email]').on('keyup keypress',function (){
+                let email = $('input[name=email]').val();
+                $('#isEmailTaken').load('/register/isemailtaken/' + email);
+            });
+            $('input[name=userName]').on('keyup keypress',function (){
+                let userName = $('input[name=userName]').val();
+                $('#isUserNameTaken').load('/register/isusernametaken/' + userName);
+            });
+            $('#enableUpdate').click(function (){
+                $('form').prop("disabled",true);
+            });
+        });
+
+        $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+            console.log("Ajax error occured on " + settings.url);
+            alert("Ajax error occured");
+        });
+    </script>
+{% endblock scripts %}

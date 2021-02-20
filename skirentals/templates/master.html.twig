@@ -65,6 +65,9 @@
                           Contact
                       </a>
                   </li>
+                  {% if userSession %}
+                    <p class="py-2 text-primary">You are logged in as <b>{{ userSession }}</b></p>
+                  {% endif %}
               </ul>
               <li class="nav-item">
                   <a class="nav-link" href="/cart">
@@ -79,10 +82,9 @@
               <ul class="navbar-nav ">
                   {# {% block header %} #}
                       <div class="d-flex ">
-                          {% if session.user %}
-                              {# <span>You are logged in as <b>{{ app.user['name'] }}</b></span> #}
+                          {% if userSession %}
                               <li class="nav-item">
-                                  <a class="nav-link" href="#">
+                                  <a class="nav-link" href="/account">
                                       <i class="fa fa-user-circle" aria-hidden="true"></i>
                                       Setting
                                   </a>

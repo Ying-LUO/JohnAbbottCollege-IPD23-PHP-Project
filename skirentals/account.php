@@ -24,9 +24,6 @@ $app->get('/register', function ($request, $response, $args) {
 });
 
 $app->post('/register', function ($request, $response, $args) use ($log) {
-    if (isset($_SESSION['user'])) {
-        return $response->withHeader('Location', '/');
-    }
 
     $firstName = $request->getParam('firstName');
     $lastName = $request->getParam('lastName');
@@ -53,16 +50,19 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
     if (strlen($userName) < 2 || strlen($userName) > 30) {
         $errorList[] = "User Name must be 2-30 characters long";
         $registerInfo['userName'] = '';
+    }elseif (isUserNameTaken($userName)) {
+        $errors[] = "User Name is already exist.";
+        $registerInfo['userName'] = '';
     }
     if(!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", $phone)) {
         $errorList[] = "Phone must be like ***-***-****";
         $registerInfo['phone'] = '';
     }
     if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
-        $errors['email'] = "Invalid Email";
+        $errors[] = "Invalid Email";
         $registerInfo['email'] = '';
     } elseif (isEmailTaken($email)) {
-        $errors['email'] = "User is already exist.";
+        $errors[] = "Email is already exist.";
         $registerInfo['email'] = '';
     }
     if (strlen($street) < 2 || strlen($street) > 100) {
@@ -84,9 +84,9 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
     $pass1Quality = verifyPasswordQuality($pass1);
     $pass2Quality = verifyPasswordQuality($pass2);
     if ($pass1Quality !== TRUE) {
-        $errors['password'] = $pass1Quality;
+        $errors['password1'] = $pass1Quality;
     } elseif ( $pass2Quality !== TRUE) {
-        $errors['password'] = $pass2Quality;
+        $errors['password2'] = $pass2Quality;
     }elseif ($pass1 !== $pass2) {
         $errors['password'] = "Passwords must be same.";
     }
@@ -105,6 +105,7 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
             'postalCode' => $postCode
         ]);
         $_SESSION['user'] = DB::queryFirstRow("SELECT * FROM users WHERE email = %s",$email);
+        $log->debug(sprintf("Register successfully: email %s, username %s, uid=%d", $email, $userName, $_SERVER['REMOTE_ADDR']));
         return $response->withHeader('Location', '/');
     }
 
@@ -115,6 +116,7 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
             'email' => $email
         ]
     ]);
+    $log->error(sprintf("Register failed: email %s, username %s, uid=%d", $email, $userName, $_SERVER['REMOTE_ADDR']));
 
 });
 
@@ -129,6 +131,7 @@ $app->get('/register/isemailtaken/{email}', function ($request, $response, array
     return $response;
 });
 
+// used for register and validation
 function isEmailTaken($email)
 {
     $users = DB::queryFirstRow("SELECT COUNT(*) AS 'count' FROM users WHERE email = %s", $email);
@@ -139,6 +142,20 @@ function isEmailTaken($email)
         return true;
     } else {
         $log->debug(sprintf("Internal Error: duplicate email %s, uid=%d", $email, $_SERVER['REMOTE_ADDR']));
+        return true;
+    }
+}
+
+function isUserNameTaken($userName)
+{
+    $users = DB::queryFirstRow("SELECT COUNT(*) AS 'count' FROM users WHERE username = %s", $userName);
+
+    if ($users['count'] == 0) {
+        return false;
+    } elseif ($users['count'] == 1) {
+        return true;
+    } else {
+        $log->debug(sprintf("Internal Error: duplicate User Name %s, uid=%d", $userName, $_SERVER['REMOTE_ADDR']));
         return true;
     }
 }
@@ -184,20 +201,29 @@ $app->post('/login', function ($request, $response, $args) use ($log) {
     }
     //
     if (!$loginSuccess) {
-        $log->info(sprintf("Login failed for email %s and %s from %s", $email, $password, $_SERVER['REMOTE_ADDR']));
+        $log->debug(sprintf("Login failed for email %s and %s from %s", $email, $password, $_SERVER['REMOTE_ADDR']));
         return $this->view->render($response, 'login.html.twig', [ 'error' => true ]);
     } else {
         unset($record['password']); // for security reasons remove password from session
         $_SESSION['user'] = $record; // remember user logged in
         $log->debug(sprintf("Login successful for email %s, uid=%d, from %s", $email, $record['id'], $_SERVER['REMOTE_ADDR']));
         return $this->view->render($response, 'login_success.html.twig', ['userSession' => $_SESSION['user'] ] );
+        echo('userSession');
     }
 });
 
 $app->get('/logout', function ($request, $response, $args) use ($log) {
     $log->debug(sprintf("Logout successful for uid=%d, from %s", @$_SESSION['user']['id'], $_SERVER['REMOTE_ADDR']));
     unset($_SESSION['user']);
-    return $this->view->render($response, 'master.html.twig', ['userSession' => null ]);  // after logout direct to main page
+    return $this->view->render($response, 'index.html.twig', ['userSession' => null ]);  // after logout direct to main page
+});
+
+$app->get('/account', function ($request, $response, $args) {
+    return $this->view->render($response, 'account.html.twig');
+});
+
+$app->post('/account', function ($request, $response, $args) {
+    // update user infor
 });
 
 $app->get('/contact', function ($request, $response, $args) {
