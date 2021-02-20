@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 19, 2021 at 06:52 AM
+-- Generation Time: Feb 20, 2021 at 10:58 AM
 -- Server version: 10.3.27-MariaDB-log
 -- PHP Version: 7.3.6
 
@@ -101,7 +101,7 @@ CREATE TABLE `users` (
   `email` varchar(50) NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `phone` varchar(10) NOT NULL,
+  `phone` varchar(12) NOT NULL,
   `registerTS` timestamp NOT NULL DEFAULT current_timestamp(),
   `street` varchar(100) NOT NULL,
   `city` varchar(100) NOT NULL,

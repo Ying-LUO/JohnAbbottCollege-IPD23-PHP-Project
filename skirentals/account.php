@@ -54,8 +54,8 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
         $errorList[] = "User Name must be 2-30 characters long";
         $registerInfo['userName'] = '';
     }
-    if (strlen($phone)!== 10) {
-        $errorList[] = "Phone must be like 5144501234";
+    if(!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", $phone)) {
+        $errorList[] = "Phone must be like ***-***-****";
         $registerInfo['phone'] = '';
     }
     if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
