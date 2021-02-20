@@ -213,21 +213,41 @@ $app->post('/login', function ($request, $response, $args) use ($log) {
 });
 
 $app->get('/logout', function ($request, $response, $args) use ($log) {
-    $log->debug(sprintf("Logout successful for uid=%d, from %s", @$_SESSION['user']['id'], $_SERVER['REMOTE_ADDR']));
-    unset($_SESSION['user']);
-    return $this->view->render($response, 'index.html.twig', ['userSession' => null ]);  // after logout direct to main page
+    if(isset($_SESSION['user'])){
+        $log->debug(sprintf("Logout successful for uid=%d, from %s", @$_SESSION['user']['id'], $_SERVER['REMOTE_ADDR']));
+        unset($_SESSION['user']);
+        return $this->view->render($response, 'index.html.twig', ['userSession' => null ]); // after logout direct to main page
+    }
 });
 
-$app->get('/account', function ($request, $response, $args) {
-    return $this->view->render($response, 'account.html.twig');
+$app->get('/account', function ($request, $response, $args) use ($log){
+    if(isset($_SESSION['user'])) {
+        $user = DB::queryFirstRow("SELECT * FROM users WHERE id=%d", $_SESSION['user']['id']);
+    }
+    if(isset($user)){
+        $log->debug(sprintf("Trying to update my account with userName %s, %s", $user['username'], $_SERVER['REMOTE_ADDR']));
+        return $this->view->render($response, 'account.html.twig',['user' => $user]);
+    }else{
+        $log->error(sprintf("Internal Error: Cannot find userName %s\n:%s", $_SESSION['user']['username'], $_SERVER['REMOTE_ADDR']));
+        return $response->withHeader("Location", "/error_internal",403);
+    }
 });
 
 $app->post('/account', function ($request, $response, $args) {
-    // update user infor
+    // update account information
 });
 
-$app->get('/contact', function ($request, $response, $args) {
-    return $this->view->render($response, 'contact.html.twig');
+$app->get('/contact', function ($request, $response, $args) use ($log){
+    if(isset($_SESSION['user'])) {
+        $user = DB::queryFirstRow("SELECT * FROM users WHERE id=%d", $_SESSION['user']['id']);
+    }
+    if(isset($user)){
+        $log->debug(sprintf("Trying to contact us with userName %s, %s", $user['username'], $_SERVER['REMOTE_ADDR']));
+        return $this->view->render($response, 'contact.html.twig',['user' => $user]);
+    }else{
+        $log->error(sprintf("Internal Error: Cannot find userName %s\n:%s", $_SESSION['user']['username'], $_SERVER['REMOTE_ADDR']));
+        return $response->withHeader("Location", "/error_internal",403);
+    }
 });
 
 $app->post('/contact', function ($request, $response, $args) {

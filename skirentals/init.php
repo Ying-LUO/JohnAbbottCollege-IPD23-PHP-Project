@@ -65,9 +65,6 @@ function db_error_handler($params) {
     http_response_code(500); // internal server error
     $twig = $container['view']->getEnvironment();
     die($twig->render('error_internal.html.twig'));
-    // Note: the above trick may also be useful to render a template into an email body
-
-    //header("Location: /internalerror"); // another possibility, not my favourite
 }
 
 // Create and configure Slim app

@@ -24,7 +24,7 @@
                 <div class="contact-info">
                     <img src="/images/skiing-solid.svg" alt="image"/>
                     <h3>My Account</h3>
-                    <button class="btn btn-light" id="enableUpdate">Update My Profile</button>
+                    <p>Please update your profile and submit</p>
                 </div>
             </div>
             <form method="POST" class="col-md-9" read-only>
@@ -35,22 +35,22 @@
                 </ul>
                 <div class="form-row" >
                     <div class="col-md-6 mb-3">
-                        <label for="inputFirstname">First name</label>
-                        <input name="firstName" type="text" class="form-control" id="inputFirstname" placeholder="First name" value="Mark" required>
+                        <label for="inputFirstname">First Name</label>
+                        <input name="firstName" type="text" class="form-control" id="inputFirstname" placeholder="First name" value="{{ user.firstName }}" required>
                         <div class="invalid-feedback d-none">
                             Invalid First Name
                         </div>
                     </div>
                     <div class="col-md-6 mb-3" >
                         <label for="inputLastname">Last name</label>
-                        <input name="lastName" type="text" class="form-control" id="inputLastname" placeholder="Last name" value="Otto" required>
+                        <input name="lastName" type="text" class="form-control" id="inputLastname" placeholder="Last name" value="{{ user.lastName }}" required>
                         <div class="invalid-feedback d-none">
                             Invalid Last Name
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputUsername">Username</label>
-                        <input name="userName" type="text" class="form-control" id="inputUsername" placeholder="User Name" value="MarkOtto" required>
+                        <input name="userName" type="text" class="form-control" id="inputUsername" placeholder="User Name" value="{{ user.username }}" required>
                         <div class="invalid-feedback d-none" id="isUserNameTaken">
                             This username is taken, please choose another one
                         </div>
@@ -61,7 +61,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputEmail">@</span>
                             </div>
-                            <input name="email" type="email" class="form-control" id="validationServerEmail" placeholder="Email Address" aria-describedby="inputGroupPrepend3" required>
+                            <input name="email" type="email" class="form-control" id="validationServerEmail" placeholder="Email Address" aria-describedby="inputGroupPrepend3" value="{{ user.email }}" required>
                             <div class="invalid-feedback d-none" id="isEmailTaken">
                                 This email address is taken, please try to login
                             </div>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="Phone">Phone Number</label>
-                        <input name="phone" type="tel" class="form-control" id="Phone" placeholder="1-(555)-555-5555" required>
+                        <input name="phone" type="tel" class="form-control" id="Phone" placeholder="***-***-****" value="{{ user.phone }}" required>
                         <div class="invalid-feedback d-none">
                             Invalid Phone number
                         </div>
@@ -92,14 +92,14 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label for="inputAddress">Address</label>
-                        <input name="street" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" required>
+                        <input name="street" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" value="{{ user.street }}" required>
                         <div class="invalid-feedback d-none">
                             Please provide a valid address.
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputCity">City</label>
-                        <input name="city" type="text" class="form-control" id="inputCity" placeholder="City" required>
+                        <input name="city" type="text" class="form-control" id="inputCity" placeholder="City" value="{{ user.city }}" required>
                         <div class="invalid-feedback d-none">
                             Please provide a valid city.
                         </div>
@@ -108,18 +108,18 @@
                         <label for="inputProvince">Province</label>
                         <select name="province" id="inputProvince" class="form-control" required>
                             <option value="AB" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>AB	Alberta</option>
-                            <option value="BC" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>BC	British Columbia</option>
-                            <option value="MB" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>MB	Manitoba</option>
-                            <option value="NB" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>NB	New Brunswick</option>
-                            <option value="NL" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>NL	Newfoundland and Labrador</option>
-                            <option value="NT" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>NT	Northwest Territories</option>
-                            <option value="NS" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>NS	Nova Scotia	Nouvelle-Écosse</option>
-                            <option value="NU" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>NU	Nunavut</option>
-                            <option value="ON" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>ON	Ontario</option>
-                            <option value="PE" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>PE	Prince Edward Island</option>
+                            <option value="BC" {% if inputProvince == 'BC' %} selected="selected"{% endif %}>BC	British Columbia</option>
+                            <option value="MB" {% if inputProvince == 'MB' %} selected="selected"{% endif %}>MB	Manitoba</option>
+                            <option value="NB" {% if inputProvince == 'NB' %} selected="selected"{% endif %}>NB	New Brunswick</option>
+                            <option value="NL" {% if inputProvince == 'NL' %} selected="selected"{% endif %}>NL	Newfoundland and Labrador</option>
+                            <option value="NT" {% if inputProvince == 'NT' %} selected="selected"{% endif %}>NT	Northwest Territories</option>
+                            <option value="NS" {% if inputProvince == 'NS' %} selected="selected"{% endif %}>NS	Nova Scotia	Nouvelle-Écosse</option>
+                            <option value="NU" {% if inputProvince == 'NU' %} selected="selected"{% endif %}>NU	Nunavut</option>
+                            <option value="ON" {% if inputProvince == 'ON' %} selected="selected"{% endif %}>ON	Ontario</option>
+                            <option value="PE" {% if inputProvince == 'PE' %} selected="selected"{% endif %}>PE	Prince Edward Island</option>
                             <option value="QC" selected>QC	Québec</option>
-                            <option value="SK" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>SK	Saskatchewan</option>
-                            <option value="YT" {% if inputProvince == 'AB' %} selected="selected"{% endif %}>YT	Yukon</option>
+                            <option value="SK" {% if inputProvince == 'SK' %} selected="selected"{% endif %}>SK	Saskatchewan</option>
+                            <option value="YT" {% if inputProvince == 'YT' %} selected="selected"{% endif %}>YT	Yukon</option>
                         </select>
                         <div class="invalid-feedback d-none">
                             Please choose a valid province.
@@ -127,13 +127,13 @@
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputPostalCode">Postal Code</label>
-                        <input name="postCode" type="text" class="form-control" id="inputPostalCode" placeholder="A1B 2C3" required>
+                        <input name="postCode" type="text" class="form-control" id="inputPostalCode" placeholder="A1B 2C3" value="{{ user.postalCode }}" required>
                         <div class="invalid-feedback d-none">
                             Please provide a valid postal code.
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary" type="submit">Save</button>
+                <button class="btn btn-primary" type="submit">Update My Account</button>
             </form>
         </div>
     </div>

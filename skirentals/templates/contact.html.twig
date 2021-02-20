@@ -36,16 +36,16 @@
                 <div class="form-row">
                     <div class="col-md-6 mb-3">
                         <label for="inputFirstname">First name</label>
-                        <input name="firstName" type="text" class="form-control" id="inputFirstname" placeholder="First name" value="Mark" required>
+                        <input name="firstName" type="text" class="form-control" id="inputFirstname" placeholder="First name" value="{{ user.firstName }}" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="inputLastname">Last name</label>
-                        <input name="lastName" type="text" class="form-control" id="inputLastname" placeholder="Last name" value="Otto" required>
+                        <input name="lastName" type="text" class="form-control" id="inputLastname" placeholder="Last name" value="{{ user.lastName }}" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Email">Email address</label>
-                    <input type="email" class="form-control" id="Email" placeholder="email@example.com" required>
+                    <input type="email" class="form-control" id="Email" placeholder="email@example.com" value="{{ user.email }}" required>
                 </div>
                 <div class="form-group">
                     <label for="Comment">Comments</label>
