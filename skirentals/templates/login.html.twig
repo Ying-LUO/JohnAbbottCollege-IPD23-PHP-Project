@@ -15,14 +15,13 @@
 {% endblock title %}
 
 {% block content %}
-
-    <div class="container contact">
+    <div class="py-5 container">
         <div class="row">
             <div class="col-md-3">
                 <div class="contact-info">
                     <img src="/images/skiing-solid.svg" alt="image"/>
-                    <h3>Welcome to Ski Rentals</h3>
-                    <p>Login with your email address and password</p>
+                    <h3>Login</h3>
+                    <p>Login with your email and password</p>
                 </div>
             </div>
             <form method="POST" class="col-md-9">
@@ -32,12 +31,12 @@
                     {% endif %}
                 </ul>
                 <div class="form-group">
-                    <label for="exampleDropdownFormEmail1">Email address</label>
-                    <input name="email" type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
+                    <label for="loginEmail">Email address</label>
+                    <input name="email" type="email" class="form-control" id="loginEmail" placeholder="email@example.com">
                 </div>
                 <div class="form-group">
-                    <label for="exampleDropdownFormPassword1">Password</label>
-                    <input name="password" type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password">
+                    <label for="loginPassword">Password</label>
+                    <input name="password" type="password" class="form-control" id="loginPassword" placeholder="Password">
                 </div>
                 <div class="form-group">
                     <div class="form-check">
@@ -51,7 +50,7 @@
             </form>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item text-info" href="/register">New around here? Sign up</a>
-            <a class="dropdown-item text-info" href="/password_reset">Forgot password?</a>
+            <a class="dropdown-item text-info" href="/passreset_request">Forgot password?</a>
         </div>
     </div>
 

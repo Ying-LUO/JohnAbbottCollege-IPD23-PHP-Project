@@ -117,15 +117,18 @@
           </div>
       </nav>
   {% endblock nav %}
-
-  {% if flashMessage %}
-      <div class="flashMessage">
-          {{flashMessage}}
-      </div>
-  {% endif %}
-
+      {% if flashMessage %}
+          <div class="flashMessage">
+              {{flashMessage}}
+          </div>
+      {% endif %}
     </div>
-    <div>{% block content %}{% endblock content %}</div>
+
+    <div>
+        {% block content %}
+
+        {% endblock content %}
+    </div>
     
         {% block footer %}
         <!--footer starts from here-->
@@ -137,7 +140,7 @@
           <li><a href="/productlines">Home</a></li>
           <li><a href="/productlines">Product Lines</a></li>
           <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="/Contact">Contact</a></li>
           <li><a href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
     
         </ul>
