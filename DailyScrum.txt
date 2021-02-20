@@ -157,4 +157,24 @@ Khalil
 	
 
 3- Need assistant
+
+Day 07 / 2021-02-20
+============================
+Ying:
+1- Todo:
+	* Finish the login/register/admin part
+
+2- Done
+	*fix the problem in register.php
+	*fix the ajax error
+
+3- Need assistant
+
+Khalil
+
+1- Todo:
+	
+2- Done
+	
+3- Need assistant
 	
