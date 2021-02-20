@@ -6,6 +6,7 @@ require_once "vendor/autoload.php";
 require_once "init.php";
 
 
+
 /*
 // STATE 1: first display of the form
 $app->get('/', function ($request, $response, $args) {
@@ -33,12 +34,12 @@ require_once 'login.php';
 require_once 'logout.php';
 require_once "admin.php";
 require_once "addequip.php";
-require_once "skibindings.php";
-require_once "skiboots.php";
-require_once "goggles.php";
-require_once "helmets.php";
-require_once "snowboardboots.php";
-require_once "snowboardbindings.php";
+//require_once "skibindings.php";
+// require_once "skiboots.php";
+//require_once "goggles.php";
+//require_once "helmets.php";
+//require_once "snowboardboots.php";
+//require_once "snowboardbindings.php";
 require_once "productlines.php";
 require_once "cart.php";
 

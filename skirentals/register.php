@@ -1,17 +1,20 @@
 <?php
 
+use Slim\Factory\AppFactory;
+use Slim\Views\TwigMiddleware;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Views\Twig;
+
 require_once 'vendor/autoload.php';
 require_once 'init.php';
 
-use Slim\Http\UploadedFile;
-
-// Define app routes below
-
-//display addequip form
-$app->get('/register',function ($request, $response, $args){
-    return $this->view-> render($response, 'register.html.twig');
+// STATE 1: first display of the form
+$app->get('/register', function ($request, $response, $args) {
+    return $this->view->render($response, 'register.html.twig');
 });
-
 
 $app->post('/register', function ($request, $response, $args) use ($log) {
     if (isset($_SESSION['user'])) {

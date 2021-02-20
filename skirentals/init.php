@@ -10,7 +10,6 @@ require_once 'vendor/autoload.php';
 session_start();
 
 
-
 // create a log channel
 $log = new Logger('main');
 $log->pushHandler(new StreamHandler('logs/everything.log', Logger::DEBUG));
@@ -31,18 +30,18 @@ $log->pushProcessor(function ($record) {
 
 //     } else {// local computer
     // khalil
-    //DB::$dbName = 'skirentalphp';
-    //DB::$user = 'skirentalphp';
-    //DB::$password = 'fu83K9WJLKSAbaob';
-    //DB::$host = 'localhost';
-    //DB::$port = 3333;
- //} else {
-     // ying
-     DB::$dbName = 'skirentalslocal';
-     DB::$user = 'skirentalslocal';
-     DB::$password = 'hV47fGeFuCSKOsQO';
-     DB::$host = 'localhost';
-     DB::$port = 3333;
+    DB::$dbName = 'skirentalphp';
+    DB::$user = 'skirentalphp';
+    DB::$password = 'fu83K9WJLKSAbaob';
+    DB::$host = 'localhost';
+    DB::$port = 3333;
+// } else {
+//     // ying
+//     DB::$dbName = 'skirentalslocal';
+//     DB::$user = 'skirentalslocal';
+//     DB::$password = 'hV47fGeFuCSKOsQO';
+//     DB::$host = 'localhost';
+//     DB::$port = 3333;
 //}
 
 DB::$error_handler = 'db_error_handler'; // runs on mysql query errors
@@ -88,7 +87,7 @@ $container['view'] = function ($c) {
         'debug' => true, // This line should enable debug mode
     ]);
     // This value will be set for all twig templates
-    $view->getEnvironment()->addGlobal('test1', 'VALUE');
+    $view->getEnvironment()->addGlobal('userSession', isset($_SESSION['user']) ? $_SESSION['user'] : null);
     // Instantiate and add Slim specific extension
     $router = $c->get('router');
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));

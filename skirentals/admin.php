@@ -13,7 +13,7 @@
         $user = DB::queryFirstRow("SELECT * FROM users WHERE id=%d", $args['id']);
         if($user){
             $response = $response->withStatus(404);
-            return $this->view-render($response, '/error_notfound.html.twig');
+            return $this->view->render($response, '/error_notfound.html.twig');
         }
         return $this->view->render($response, 'register.html.twig');
     });

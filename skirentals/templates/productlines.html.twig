@@ -21,39 +21,14 @@
 {% block content %}
 <div class='container back p-5'>
     {% for p in ProductLines %}
-        {% if p.category == "Ski Bindings" %}
-            <a class="nav-link" href="/skibindings" btn>
-        {% endif %}
-
-        {% if p.category == "Ski Boots" %}
-            <a class="nav-link" href="/skiboots" btn>
-        {% endif %}
-
-        {% if p.category == "Snow Board Bindings" %}
-        <a class="nav-link" href="/snowboardbindings" btn>
-        {% endif %}
-
-        {% if p.category == "Snow Board Boots" %}
-            <a class="nav-link" href="/snowboardboots" btn>
-        {% endif %}
-
-        {% if p.category == "Goggles" %}
-        <a class="nav-link" href="/goggles" btn>
-        {% endif %}
-
-        {% if p.category == "Helmets" %}
-        <a class="nav-link" href="/helmets" btn>
-        {% endif %}
-    
+        <a class="nav-link" href="/category/{{p.category}}" btn>
         <div class="card_wrapper">
             <div class="card mx-auto mt-3 mb-3 "> <img class='img-thumbnail m-3 card_image' src="/uploads/{{p.photo}}" />
                 <div class="card-body text-center">
                     <div >
                         <p class="card-title font-weight-bold">{{p.category}}</p>
-                        <h5 class="card-title font-weight-bold">{{userSession.username}}</h5>
-                    
                     </div>
-             </div>
+                </div>
             </div>
         </div>
     </a>
