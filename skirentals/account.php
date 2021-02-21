@@ -152,6 +152,31 @@ $app->get('/register/isusernametaken/{username}', function ($request, $response,
     }
 });
 
+// used via AJAX
+$app->get('/account/isemailtaken/{email}', function ($request, $response, $args) use ($log) {
+    // get email address from url
+    $email = isset($args['email']) ? $args['email'] : "";
+    $record = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
+    if ($record) {
+        $log->debug(sprintf("Internal Error: duplicate email %s, uid=%d", $email, $_SERVER['REMOTE_ADDR']));
+        return $response->write("Email already in use");
+    } else {
+        return $response->write("");
+    }
+});
+
+$app->get('/account/isusernametaken/{username}', function ($request, $response, $args) use ($log) {
+    // get username from url
+    $username = isset($args['username']) ? $args['username'] : "";
+    $record = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $username);
+    if ($record) {
+        $log->debug(sprintf("Internal Error: duplicate username %s, uid=%d", $username, $_SERVER['REMOTE_ADDR']));
+        return $response->write("UserName already in use");
+    } else {
+        return $response->write("");
+    }
+});
+
 function verifyPasswordQuality($password) {
     if (strlen($password) < 6 || strlen($password) > 100
         || preg_match("/[a-z]/", $password) == false
@@ -362,51 +387,100 @@ $app->get('/passreset_request', function ($request, $response, $args) {
 });
 
 $app->post('/passreset_request', function ($request, $response, $args) use ($log){
-
     $email = $request->getParam('email');
-    $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
-    if ($user) { // send email
-        $secret = generateRandomString(60);
-        $dateTime = gmdate("Y-m-d H:i:s"); // GMT time zone
-        DB::insertUpdate('passwordresets', [
-            'userId' => $user['id'],
-            'secret' => $secret,
-            'creationDateTime' => $dateTime
-        ], [
-            'secret' => $secret,
-            'creationDateTime' => $dateTime
-        ]);
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
+        setFlashMessage("Please input an valid email address");
+        return $response->withRedirect("/passreset_request");
+    }else{
+        $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
+        if ($user) { // send email
+            $secret = generateRandomString(60);
+            $dateTime = gmdate("Y-m-d H:i:s"); // GMT time zone
+            DB::insertUpdate('passwordresets', [
+                'userId' => $user['id'],
+                'secret' => $secret,
+                'creationDateTime' => $dateTime
+            ], [
+                'secret' => $secret,
+                'creationDateTime' => $dateTime
+            ]);
 
-        // primitive template with string replacement
-        $emailBody = file_get_contents('\password_reset_email.html.strsub');
-        $emailBody = str_replace('EMAIL', $email, $emailBody);
-        $emailBody = str_replace('SECRET', $secret, $emailBody);
+            // primitive template with string replacement
+            $emailBody = file_get_contents('templates/password_reset_email.html.strsub');
+            $emailBody = str_replace('EMAIL', $email, $emailBody);
+            $emailBody = str_replace('SECRET', $secret, $emailBody);
 
-        // OPTION 2: USING EXTERNAL SERVICE - should not land in Spam / Junk folder
-        $config = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key',
-            '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');
-        $apiInstance = new SendinBlue\Client\Api\SMTPApi(new GuzzleHttp\Client(), $config);
-        // \SendinBlue\Client\Model\SendSmtpEmail | Values to send a transactional email
-        $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail();
-        $sendSmtpEmail->setSubject("Password reset for teacher.ipd20.com");
-        $sendSmtpEmail->setSender(new \SendinBlue\Client\Model\SendSmtpEmailSender(
-            ['name' => 'No-Reply', 'email' => 'noreply@teacher.ip20.com']) );
-        $sendSmtpEmail->setTo([ new \SendinBlue\Client\Model\SendSmtpEmailTo(
-            ['name' => $user['name'], 'email' => $email])  ]);
-        $sendSmtpEmail->setHtmlContent($emailBody);
-        //
-        try {
-            $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
-            $log->debug(sprintf("Password reset sent to %s, uid=%d", $email));
-            return $this->view->render($response, 'password_reset_sent.html.twig');
-        } catch (Exception $e) {
-            $log->error(sprintf("Error sending password reset email to %s\n:%s", $email, $e->getMessage()));
-            return $response->withHeader("Location", "/error_internal",403);
+            // OPTION 2: USING EXTERNAL SERVICE - should not land in Spam / Junk folder
+            $config = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key',
+                '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');
+            $apiInstance = new SendinBlue\Client\Api\SMTPApi(new GuzzleHttp\Client(), $config);
+
+            $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail();
+            $sendSmtpEmail->setSubject("Password reset for skirentals.ipd23.com");
+            $sendSmtpEmail->setSender(new \SendinBlue\Client\Model\SendSmtpEmailSender(
+                ['name' => 'No-Reply', 'email' => 'noreply@teacher.ip20.com']) );
+            $sendSmtpEmail->setTo([ new \SendinBlue\Client\Model\SendSmtpEmailTo(
+                ['name' => $user['username'], 'email' => $email])  ]);
+            $sendSmtpEmail->setHtmlContent($emailBody);
+            //
+            try {
+                $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
+                $log->debug(sprintf('password reset has been sent to email=%s for username=%s, %s', $email, $user['username'], $_SERVER['REMOTE_ADDR']));
+                setFlashMessage("Password reset has been sent (if an account with this email exists). Check your email in a moment.");
+                return $response->withRedirect("/");
+            } catch (Exception $e) {
+                $log->error(sprintf("Error sending password reset email to %s\n:%s", $email, $e->getMessage()));
+                return $response->withHeader("Location", "/error_internal",403);
+            }
         }
-        // end of option 2 code
+    }
+});
+
+$app->get('/passresetaction/{secret}', function ($request, $response, $args) use ($log){
+    return $this->view->render($response, 'password_reset_action.html.twig');
+});
+
+$app->post('/passresetaction/{secret}', function ($request, $response, $args) use ($log){
+    $secret = $args['secret'];
+    $resetRecord = DB::queryFirstRow("SELECT * FROM passwordresets WHERE secret=%s", $secret);
+    if (!$resetRecord) {
+        $log->debug(sprintf('password reset token not found, token=%s', $secret));
+        setFlashMessage("Password reset token not found or not valid (expired).");
+        return $response->withRedirect("/");
+    }
+    // check if password reset has not expired
+    $creationDT = strtotime($resetRecord['creationDateTime']); // convert to seconds since Jan 1, 1970 (UNIX time)
+    $nowDT = strtotime(gmdate("Y-m-d H:i:s")); // current time GMT
+    if ($nowDT - $creationDT > 60*60) { // expired
+        DB::delete('passwordresets', 'secret=%s', $secret);
+        $log->debug(sprintf('password reset token expired userid=%s, token=%s', $resetRecord['userId'], $secret));
+        setFlashMessage("Password reset token not found or not valid (expired).");
+        return $response->withRedirect("/");
+    }
+
+    $pass1 = $request->getParam('pass1');
+    $pass2 = $request->getParam('pass2');
+    $errorList = array();
+    if ($pass1 != $pass2) {
+        array_push($errorList, "Passwords don't match");
+    } else {
+        $passQuality = verifyPasswordQuality($pass1);
+        if ($passQuality !== TRUE) {
+            array_push($errorList, $passQuality);
+        }
     }
     //
-    return $this->view->render($response, 'password_reset_sent.html.twig');
+    if ($errorList) {
+        return $this->view->render($response, 'password_reset_action.html.twig', ['errors' => $errorList]);
+    } else {
+        global $passwordPepper;
+        $pwdPeppered = hash_hmac("sha256", $pass1, $passwordPepper);
+        $pwdHashed = password_hash($pwdPeppered, PASSWORD_DEFAULT); // PASSWORD_ARGON2ID);
+        DB::update('users', ['password' => $pwdHashed], "id=%d", $resetRecord['userId']);
+        DB::delete('passwordresets', 'secret=%s', $secret); // cleanup the record
+        setFlashMessage("Password has been reset Successfully");
+        return $response->withRedirect("/login");
+    }
 });
 
 function generateRandomString($length = 10) {
