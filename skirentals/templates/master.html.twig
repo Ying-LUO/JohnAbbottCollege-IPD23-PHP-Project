@@ -115,18 +115,17 @@
                       </div>
                   {# {% endblock header %} #}
               </ul>
-
           </div>
-      </nav>
-  {% endblock nav %}
-      {% if flashMessage %}
-          <div class="flashMessage">
-              {{flashMessage}}
-          </div>
-      {% endif %}
+        </nav>
+      {% endblock nav %}
     </div>
 
     <div>
+        {% if flashMessage %}
+            <div id="flashMessage" class="alert alert-primary">
+                {{flashMessage}}
+            </div>
+        {% endif %}
         {% block content %}
 
         {% endblock content %}
@@ -135,7 +134,7 @@
         {% block footer %}
         <!--footer starts from here-->
     <div mt-5>
-    <footer class="footer">
+    <footer class="footer fixed-bottom">
       
       <div class="container">
         <ul class="foote_bottom_ul_amrc">

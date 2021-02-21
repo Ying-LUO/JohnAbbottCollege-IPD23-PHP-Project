@@ -121,8 +121,9 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
             'postalCode' => strtoupper($postCode)
         ]);
         $_SESSION['user'] = DB::queryFirstRow("SELECT * FROM users WHERE email = %s",$email);
-        $log->debug(sprintf("Register successfully: email %s, username %s, uid=%d", $email, $userName, $_SERVER['REMOTE_ADDR']));
-        return $response->withHeader('Location', '/');
+        $log->debug(sprintf("Register new user successfully: email %s, username %s, uid=%d", $email, $userName, $_SERVER['REMOTE_ADDR']));
+        setFlashMessage("Register New User Successfully");
+        return $response->withRedirect("/");
     }
 });
 
@@ -172,10 +173,10 @@ $app->get('/login', function ($request, $response, $args) {
 
 // STATE 2&3: receiving submission
 $app->post('/login', function ($request, $response, $args) use ($log) {
-    $email = $request->getParam('email');
+    $errorList = [];
+    $emailOrUsername = $request->getParam('emailOrUsername');
     $password = $request->getParam('password');
-    //
-    $record = DB::queryFirstRow("SELECT id ,email , password, username FROM users WHERE email=%s", $email);
+    $record = DB::queryFirstRow("SELECT id, email, password, username FROM users WHERE (email=%s) OR (username=%s)", $emailOrUsername, $emailOrUsername);
     $loginSuccess = false;
     if ($record) {
         global $passwordPepper;
@@ -183,18 +184,22 @@ $app->post('/login', function ($request, $response, $args) use ($log) {
         $pwdHashed = $record['password'];
         if (password_verify($pwdPeppered, $pwdHashed)) {
             $loginSuccess = true;
-        } 
+        }else{
+            $errorList[] = "Password is incorrect";
+        }
+    }else{
+        $errorList[] = "Username Or Email Address is not existed";
     }
     //
     if (!$loginSuccess) {
-        $log->debug(sprintf("Login failed for email %s and %s from %s", $email, $password, $_SERVER['REMOTE_ADDR']));
-        return $this->view->render($response, 'login.html.twig', [ 'error' => true ]);
+        $log->debug(sprintf("Login failed for email or username: %s and password: %s from %s", $emailOrUsername, $password, $_SERVER['REMOTE_ADDR']));
+        return $this->view->render($response, 'login.html.twig', [ 'errors' => $errorList ]);
     } else {
         unset($record['password']); // for security reasons remove password from session
         $_SESSION['user'] = $record; // remember user logged in
-        $log->debug(sprintf("Login successful for email %s, uid=%d, from %s", $email, $record['id'], $_SERVER['REMOTE_ADDR']));
-        echo "<script>$('.alert').alert('Login Successfully');</script>";
-        return $this->view->render($response, 'index.html.twig', ['userSession' => $_SESSION['user'] ] );
+        $log->debug(sprintf("Login successful for email or username: %s, uid=%d, from %s", $emailOrUsername, $record['id'], $_SERVER['REMOTE_ADDR']));
+        setFlashMessage("Login Successfully");
+        return $response->withRedirect("/");
     }
 });
 
@@ -202,7 +207,8 @@ $app->get('/logout', function ($request, $response, $args) use ($log) {
     if(isset($_SESSION['user'])){
         $log->debug(sprintf("Logout successful for uid=%d, from %s", @$_SESSION['user']['id'], $_SERVER['REMOTE_ADDR']));
         unset($_SESSION['user']);
-        return $this->view->render($response, 'index.html.twig', ['userSession' => null ]); // after logout direct to main page
+        setFlashMessage("You have been logout!");
+        return $response->withRedirect("/");
     }
 });
 
@@ -319,7 +325,8 @@ $app->post('/account', function ($request, $response, $args) use ($log) {
             // refresh new user data
             $_SESSION['user'] = DB::queryFirstRow("SELECT * FROM users WHERE id = %d",$originUser['id']);
             $log->debug(sprintf("Update user account successfully: new email %s, new username %s, uid=%d", $_SESSION['user']['email'], $_SESSION['username'], $_SERVER['REMOTE_ADDR']));
-            return $response->withHeader('Location', '/');
+            setFlashMessage("Update user account successfully");
+            return $response->withRedirect("/");
         }
 
     }else{
@@ -331,13 +338,12 @@ $app->post('/account', function ($request, $response, $args) use ($log) {
 $app->get('/contact', function ($request, $response, $args) use ($log){
     if(isset($_SESSION['user'])) {
         $user = DB::queryFirstRow("SELECT * FROM users WHERE id=%d", $_SESSION['user']['id']);
-    }
-    if(isset($user)){
-        $log->debug(sprintf("Trying to contact us with userName %s, %s", $user['username'], $_SERVER['REMOTE_ADDR']));
-        return $this->view->render($response, 'contact.html.twig',['user' => $user]);
+        if(isset($user)) {
+            $log->debug(sprintf("Trying to contact us with userName %s, %s", $user['username'], $_SERVER['REMOTE_ADDR']));
+            return $this->view->render($response, 'contact.html.twig',['user' => $user]);
+        }
     }else{
-        $log->error(sprintf("Internal Error: Cannot find userName %s\n:%s", $_SESSION['user']['username'], $_SERVER['REMOTE_ADDR']));
-        return $response->withHeader("Location", "/error_internal",403);
+        return $this->view->render($response, 'contact.html.twig');
     }
 });
 

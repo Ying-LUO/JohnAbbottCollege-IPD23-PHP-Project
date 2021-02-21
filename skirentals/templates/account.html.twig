@@ -28,11 +28,13 @@
                 </div>
             </div>
             <form method="POST" class="col-md-9" read-only>
-                <ul class="errorList">
-                    {% if error %}
-                        <li>{{ error }}</li>
-                    {% endif %}
-                </ul>
+                {% if errors %}
+                    <ul class="errorList">
+                        {% for e in errors %}
+                            <li>{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 <div class="form-row" >
                     <div class="col-md-6 mb-3">
                         <label for="inputFirstname">First Name</label>

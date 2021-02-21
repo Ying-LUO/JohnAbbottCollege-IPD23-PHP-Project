@@ -21,18 +21,20 @@
                 <div class="contact-info">
                     <img src="/images/skiing-solid.svg" alt="image"/>
                     <h3>Login</h3>
-                    <p>Login with your email and password</p>
+                    <p>Login with your email or username and password</p>
                 </div>
             </div>
             <form method="POST" class="col-md-9">
-                <ul class="errorList">
-                    {% if error %}
-                        <li>{{ error }}</li>
-                    {% endif %}
-                </ul>
+                {% if errors %}
+                    <ul class="errorList">
+                        {% for e in errors %}
+                            <li>{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 <div class="form-group">
-                    <label for="loginEmail">Email address</label>
-                    <input name="email" type="email" class="form-control" id="loginEmail" placeholder="email@example.com">
+                    <label for="loginEmail">Email address or User name</label>
+                    <input name="emailOrUsername" type="text" class="form-control" id="loginEmail" placeholder="Email Or Username">
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Password</label>
