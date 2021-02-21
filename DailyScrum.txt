@@ -162,11 +162,10 @@ Day 07 / 2021-02-20
 ============================
 Ying:
 1- Todo:
-	* Finish the login/register/admin part
+	*Admin management for user update/listview of equipment
 
 2- Done
-	*fix the problem in register.php
-	*fix the ajax error
+	*Finished login/logout/register/account/reset password pages
 
 3- Need assistant
 
