@@ -16,6 +16,11 @@
 			</div>
 		</div>
         <form method="POST" enctype="multipart/form-data" class="col-md-9">
+            {% if errors %}    
+                        {% for e in errors %}
+                        <p class="form-control is-invalid text-white bg-danger">{{ e }}</p>                          
+                        {% endfor %}                
+                {% endif %}
             
                 <div class="contact-form">
                     <div class="form-group">
