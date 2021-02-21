@@ -69,7 +69,7 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
     if (strlen($province) < 2 || strlen($province) > 30) {
         $errorList['province'] = "Province must be 2-30 characters long";
     }
-    if(!preg_match("/^[A-Za-z0-9]{3} [A-Za-z0-9]{3}$/", $postCode)) {
+    if(!preg_match("/^[A-Za-z0-9_ ]{3,4}[A-Za-z0-9]{3}$/", $postCode)) {
         $errorList['postalCode'] = "PostalCode: " . $postCode . " must be in XXX YYY format";
     }
     if (strcmp($isAgree, 'on') <> 0 ) {

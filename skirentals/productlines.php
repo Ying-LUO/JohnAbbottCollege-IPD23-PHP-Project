@@ -18,7 +18,7 @@
       $cat =  $args['cat'];
 
 
-      if (!in_array($cat, ['skiBoots', 'skiBindings', 'Goggles','snowBoardBindings', 'Helmets', 'snowBoardBoots'])) { // TODO add more
+      if (!in_array($cat, ['skiBoots', 'skiBindings', 'goggles','snowboardBindings', 'helmets', 'snowboardBoots'])) { // TODO add more
             
           throw new Slim\Exception\NotFoundException($request, $response); // this will cause 404
       }
