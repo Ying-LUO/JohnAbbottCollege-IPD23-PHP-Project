@@ -65,9 +65,6 @@
                           Contact
                       </a>
                   </li>
-                  {% if userSession %}
-                    <p class="py-2 text-primary">You are logged in as <b>{{ userSession.username }}</b></p>
-                  {% endif %}
               </ul>
               <li class="nav-item">
                   <a class="nav-link" href="/cart">
@@ -121,6 +118,9 @@
     </div>
 
     <div>
+        {% if userSession %}
+            <p class="py-2 px-4 text-primary float-sm-right">You are logged in as <b>{{ userSession.username }}</b></p>
+        {% endif %}
         {% if flashMessage %}
             <div id="flashMessage" class="alert alert-primary">
                 {{flashMessage}}
