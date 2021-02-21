@@ -3,7 +3,7 @@
 {% block stylesheet %}<link rel="stylesheet" href="/styles/addequip_style.css" />{% endblock stylesheet%}
 
 {% block title %}
-    Register New User
+    My Account
 {% endblock title %}
 
 {% block content %}
@@ -12,11 +12,11 @@
             <div class="col-md-3">
                 <div class="contact-info">
                     <img src="/images/skiing-solid.svg" alt="image"/>
-                    <h3>Sign Up</h3>
-                    <p>To register new user, please input the information in list<br><br>All fields are required!</p>
+                    <h3>My Account</h3>
+                    <p>Please update your profile and submit</p>
                 </div>
             </div>
-            <form method="POST" class="col-md-9">
+            <form method="POST" class="col-md-9" read-only>
                 {% if errors %}
                     <ul class="errorList">
                         {% for e in errors %}
@@ -24,25 +24,25 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
-                <div class="form-row">
+                <div class="form-row" >
                     <div class="col-md-6 mb-3">
-                        <label for="inputFirstname">First name</label>
-                        <input name="firstName" type="text" class="form-control" id="inputFirstname" value="{{ prevInput.firstName }}" placeholder="First name" required>
+                        <label for="inputFirstname">First Name</label>
+                        <input name="firstName" type="text" class="form-control" id="inputFirstname" placeholder="First name" value="{{ user.firstName }}" required>
                         <div class="invalid-feedback d-none">
                             Invalid First Name
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3" >
                         <label for="inputLastname">Last name</label>
-                        <input name="lastName" type="text" class="form-control" id="inputLastname" value="{{ prevInput.lastName }}" placeholder="Last name" required>
+                        <input name="lastName" type="text" class="form-control" id="inputLastname" placeholder="Last name" value="{{ user.lastName }}" required>
                         <div class="invalid-feedback d-none">
                             Invalid Last Name
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputUsername">Username</label>
-                        <input name="userName" type="text" class="form-control" id="inputUsername" value="{{ prevInput.userName }}" placeholder="User Name" required>
-                        <div class="invalid-feedback d-none">
+                        <input name="userName" type="text" class="form-control" id="inputUsername" placeholder="User Name" value="{{ user.username }}" required>
+                        <div class="invalid-feedback d-none" id="isUserNameTaken">
                             This username is taken, please choose another one
                         </div>
                     </div>
@@ -52,29 +52,29 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputEmail">@</span>
                             </div>
-                            <input name="email" value="{{ prevInput.email }}" type="email" class="form-control" id="validationServerEmail" placeholder="Email Address" aria-describedby="inputGroupPrepend3" required>
-                            <div class="invalid-feedback d-none" id="isTaken">
+                            <input name="email" type="email" class="form-control" id="validationServerEmail" placeholder="Email Address" aria-describedby="inputGroupPrepend3" value="{{ user.email }}" required>
+                            <div class="invalid-feedback d-none" id="isEmailTaken">
                                 This email address is taken, please try to login
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="Phone">Phone Number</label>
-                        <input name="phone" type="text" class="form-control" id="Phone" value="{{ prevInput.phone }}" placeholder="***-***-****" required>
+                        <input name="phone" type="tel" class="form-control" id="Phone" placeholder="***-***-****" value="{{ user.phone }}" required>
                         <div class="invalid-feedback d-none">
                             Invalid Phone number
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="inputPassword">Password</label>
-                        <input name="pass1" type="password" class="form-control" id="inputPassword" value="{{ prevInput.pass1 }}" placeholder="Password" required>
+                        <input name="pass1" type="password" class="form-control" id="inputPassword" placeholder="Password" required>
                         <div class="invalid-feedback d-none">
                             Password invalid
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="confirmPassword">Confirm Password</label>
-                        <input name="pass2" type="password" class="form-control" id="confirmPassword" value="{{ prevInput.pass2 }}" placeholder="Password" required>
+                        <input name="pass2" type="password" class="form-control" id="confirmPassword" placeholder="Password" required>
                         <div class="invalid-feedback d-none">
                             Password not match
                         </div>
@@ -83,47 +83,35 @@
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label for="inputAddress">Address</label>
-                        <input name="street" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" value="{{ prevInput.street }}" required>
+                        <input name="street" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" value="{{ user.street }}" required>
                         <div class="invalid-feedback d-none">
                             Please provide a valid address.
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputCity">City</label>
-                        <input name="city" type="text" class="form-control" id="inputCity" placeholder="City" value="{{ prevInput.city }}" required>
+                        <input name="city" type="text" class="form-control" id="inputCity" placeholder="City" value="{{ user.city }}" required>
                         <div class="invalid-feedback d-none">
                             Please provide a valid city.
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputProvince">Province</label>
-                        <input name="province" type="text" class="form-control" id="inputProvince" placeholder="QC Quebec" value="{{ prevInput.province }}" required>
+                        <input name="province" type="text" class="form-control" id="inputProvince" placeholder="QC Quebec" value="{{ user.province }}" required>
                         <div class="invalid-feedback d-none">
                             Please choose a valid province.
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputPostalCode">Postal Code</label>
-                        <input name="postCode" type="text" class="form-control" id="inputPostalCode" value="{{ prevInput.postalCode }}" placeholder="A1B 2C3" required>
+                        <input name="postCode" type="text" class="form-control" id="inputPostalCode" placeholder="A1B 2C3" value="{{ user.postalCode }}" required>
                         <div class="invalid-feedback d-none">
                             Please provide a valid postal code.
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input name="isAgree" class="form-check-input" type="checkbox" id="invalidCheck3" required>
-                        <label class="form-check-label" for="invalidCheck3">
-                            Agree to terms and conditions
-                        </label>
-                        <div class="invalid-feedback d-none">
-                            You must agree before submitting.
-                        </div>
-                    </div>
-                </div>
-                <button class="btn btn-primary" type="submit">Submit form</button>
+                <button class="btn btn-primary" type="submit">Update My Account</button>
             </form>
-            <a class="dropdown-item text-info" href="/login">Already has a user? Sign In</a>
         </div>
     </div>
 
@@ -136,7 +124,11 @@
         $(document).ready(function(){
             $('input[name=email]').on('keyup keypress',function (){
                 let email = $('input[name=email]').val();
-                $('#isTaken').load('/register/isemailtaken/' + email);
+                $('#isEmailTaken').load('/account/isemailtaken/' + email);
+            });
+            $('input[name=userName]').on('keyup keypress',function (){
+                let userName = $('input[name=userName]').val();
+                $('#isUserNameTaken').load('/account/isusernametaken/' + userName);
             });
         });
 

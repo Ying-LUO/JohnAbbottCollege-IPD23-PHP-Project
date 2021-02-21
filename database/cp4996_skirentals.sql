@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 19, 2021 at 06:52 AM
+-- Generation Time: Feb 20, 2021 at 12:54 PM
 -- Server version: 10.3.27-MariaDB-log
 -- PHP Version: 7.3.6
 
@@ -91,6 +91,19 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `passwordresets`
+--
+
+CREATE TABLE `passwordresets` (
+  `id` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `secret` varchar(60) NOT NULL,
+  `creationDateTime` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -101,7 +114,7 @@ CREATE TABLE `users` (
   `email` varchar(50) NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `phone` varchar(10) NOT NULL,
+  `phone` varchar(12) NOT NULL,
   `registerTS` timestamp NOT NULL DEFAULT current_timestamp(),
   `street` varchar(100) NOT NULL,
   `city` varchar(100) NOT NULL,
@@ -143,6 +156,13 @@ ALTER TABLE `orders`
   ADD KEY `userId` (`userId`);
 
 --
+-- Indexes for table `passwordresets`
+--
+ALTER TABLE `passwordresets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userId` (`userId`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -179,6 +199,12 @@ ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `passwordresets`
+--
+ALTER TABLE `passwordresets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -206,6 +232,12 @@ ALTER TABLE `orderitems`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `passwordresets`
+--
+ALTER TABLE `passwordresets`
+  ADD CONSTRAINT `passwordresets_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

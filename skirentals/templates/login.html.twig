@@ -1,41 +1,43 @@
 {% extends "master.html.twig" %}
 
+{% block stylesheet %}<link rel="stylesheet" href="/styles/addequip_style.css" />{% endblock stylesheet%}
+
 {% block title %}
-    Login page
+    Login to Ski Rentals
 {% endblock title %}
 
-{% block header %}{% endblock header %}
-
 {% block content %}
-    <h2>Welcome to Ski Rental</h2>
-
-    <div>
-        <form class="px-4 py-3" method="POST" autocomplete="off">
-            <ul class="errorList">
-                {% if error %}
-                    <li>{{ error }}</li>
-                {% endif %}
-            </ul>
-            <div class="form-group">
-                <label for="exampleDropdownFormEmail1">Email address</label>
-                <input type="email" name="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
-            </div>
-            <div class="form-group">
-                <label for="exampleDropdownFormPassword1">Password</label>
-                <input type="password" name="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password">
-            </div>
-            <div class="form-group">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                    <label class="form-check-label" for="dropdownCheck">
-                        Remember me
-                    </label>
+    <div class="py-5 container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="contact-info">
+                    <img src="/images/skiing-solid.svg" alt="image"/>
+                    <h3>Login</h3>
+                    <p>Login with your email or username and password</p>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Sign in</button>
-        </form>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="/register">New around here? Sign up</a>
-        <a class="dropdown-item" href="/password_reset">Forgot password?</a>
+            <form method="POST" class="col-md-9">
+                {% if errors %}
+                    <ul class="errorList">
+                        {% for e in errors %}
+                            <li>{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="form-group">
+                    <label for="loginEmail">Email address or User name</label>
+                    <input name="emailOrUsername" type="text" class="form-control" id="loginEmail" placeholder="Email Or Username">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input name="password" type="password" class="form-control" id="loginPassword" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </form>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item text-info" href="/register">New around here? Sign up</a>
+            <a class="dropdown-item text-info" href="/passreset_request">Forgot password?</a>
+        </div>
     </div>
+
 {% endblock content %}

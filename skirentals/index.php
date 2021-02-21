@@ -1,12 +1,6 @@
 <?php
-
-
 require_once "vendor/autoload.php";
-//session_start();
 require_once "init.php";
-
-
-
 /*
 // STATE 1: first display of the form
 $app->get('/', function ($request, $response, $args) {
@@ -29,24 +23,14 @@ $app->get('/', function ($request, $response, $args) {
 */
 
 // Define app routes below
-require_once 'register.php';
-require_once 'login.php';
-require_once 'logout.php';
+require_once 'account.php';
 require_once "admin.php";
 require_once "addequip.php";
-//require_once "skibindings.php";
-// require_once "skiboots.php";
-//require_once "goggles.php";
-//require_once "helmets.php";
-//require_once "snowboardboots.php";
-//require_once "snowboardbindings.php";
 require_once "productlines.php";
 require_once "cart.php";
 
 // Run app - must be the last operation
 // if you forget it all you'll see is a blank page
-
-
 
 $app->run();
 

@@ -17,8 +17,7 @@
     $app->get('/category/{cat:[A-Za-z0-9_ -]+}', function ($request, $response, $args) use ($log){
       $cat =  $args['cat'];
 
-    
-     
+
       if (!in_array($cat, ['skiBoots', 'skiBindings', 'Goggles','snowBoardBindings', 'Helmets', 'snowBoardBoots'])) { // TODO add more
             
           throw new Slim\Exception\NotFoundException($request, $response); // this will cause 404

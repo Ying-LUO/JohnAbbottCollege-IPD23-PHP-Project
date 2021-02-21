@@ -5,6 +5,7 @@
         "sergeytsalkov/meekrodb": "^2.3",
         "twig/twig": "^2.14",
         "monolog/monolog": "^2.2",
-        "slim/twig-view": "^2.5"
+        "slim/twig-view": "^2.5",
+        "sendinblue/api-v3-sdk": "^6.2"
     }
 }

@@ -161,6 +161,7 @@ Khalil
 3- Need assistant
 
 
+
 Day 06 / 2021-02-20, 21
 ============================
 Ying:
@@ -186,8 +187,7 @@ Khalil
 2- Done
 	
 	* fix category and session
-	* working on some styles.
-
-	
+	* working on some styles.	
 
 3- Need assistant
+

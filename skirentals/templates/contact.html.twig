@@ -1,13 +1,59 @@
 {% extends "master.html.twig" %}
 
+{% block stylesheet %}<link rel="stylesheet" href="/styles/addequip_style.css" />{% endblock stylesheet%}
+
 {% block title %}
     Contact Us
 {% endblock title %}
 
-{% block header %}
-{% endblock header %}
-
 {% block content %}
-    <h2>Contact Us</h2>
-
+    <div class="py-5 container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="contact-info">
+                    <img src="/images/skiing-solid.svg" alt="image"/>
+                    <h3>Contact Us</h3>
+                    <p>We would love to hear from you!</p>
+                </div>
+            </div>
+            <form method="POST" class="col-md-9">
+                {% if errors %}
+                    <ul class="errorList">
+                        {% for e in errors %}
+                            <li>{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="inputFirstname">First name</label>
+                        <input name="firstName" type="text" class="form-control" id="inputFirstname" placeholder="First name"
+                                {% if user %}
+                                    value="{{ user.firstName }}" disabled
+                                {% endif %}>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="inputLastname">Last name</label>
+                        <input name="lastName" type="text" class="form-control" id="inputLastname" placeholder="Last name"
+                                {% if user %}
+                                    value="{{ user.lastName }}" disabled
+                                {% endif %}>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Email">Email address</label>
+                    <input type="email" class="form-control" id="Email" placeholder="email@example.com"
+                            {% if user %}
+                                value="{{ user.email }}" disabled
+                            {% endif %}>
+                </div>
+                <div class="form-group">
+                    <label for="Comment">Comments</label>
+                    <textarea class="form-control" rows="5" id="Comment" required ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Comments</button>
+            </form>
+            <div class="dropdown-divider"></div>
+        </div>
+    </div>
 {% endblock content %}

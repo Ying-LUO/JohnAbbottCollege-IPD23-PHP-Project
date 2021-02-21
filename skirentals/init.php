@@ -30,18 +30,18 @@ $log->pushProcessor(function ($record) {
 
 //     } else {// local computer
     // khalil
-    DB::$dbName = 'skirentalphp';
-    DB::$user = 'skirentalphp';
-    DB::$password = 'fu83K9WJLKSAbaob';
-    DB::$host = 'localhost';
-    DB::$port = 3333;
+//DB::$dbName = 'skirentalphp';
+//  DB::$user = 'skirentalphp';
+//  DB::$password = 'fu83K9WJLKSAbaob';
+//  DB::$host = 'localhost';
+//  DB::$port = 3333;
 // } else {
 //     // ying
-//     DB::$dbName = 'skirentalslocal';
-//     DB::$user = 'skirentalslocal';
-//     DB::$password = 'hV47fGeFuCSKOsQO';
-//     DB::$host = 'localhost';
-//     DB::$port = 3333;
+     DB::$dbName = 'skirentalslocal';
+     DB::$user = 'skirentalslocal';
+     DB::$password = 'hV47fGeFuCSKOsQO';
+     DB::$host = 'localhost';
+     DB::$port = 3333;
 //}
 
 DB::$error_handler = 'db_error_handler'; // runs on mysql query errors
@@ -65,9 +65,6 @@ function db_error_handler($params) {
     http_response_code(500); // internal server error
     $twig = $container['view']->getEnvironment();
     die($twig->render('error_internal.html.twig'));
-    // Note: the above trick may also be useful to render a template into an email body
-
-    //header("Location: /internalerror"); // another possibility, not my favourite
 }
 
 // Create and configure Slim app

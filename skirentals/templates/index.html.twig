@@ -1,29 +1,76 @@
 {% extends "master.html.twig" %}
 
-{% block title %}
-    Welcome to ski Rentals
-{% endblock title %}
+{% block stylesheet %}<link rel="stylesheet" href="/styles/productlines.css" />{% endblock stylesheet%}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <!-- Index page css-->
-    <link rel="stylesheet" type="text/css" href="/styles/styles.css" />
-{% endblock stylesheets %}
+{% block title %}Welcome to Ski Rentals{% endblock %}
 
 {% block content %}
-    <h1>Welcome to Ski Rentals!</h1>
-    {% for equip in equipmentList %}
-    <div class="card" style="width: 18rem;">
-        <img src="{{ equip.photo }}" class="card-img-top" alt="{{ equip.photo }}">
-        <div class="card-body">
-            <h5 class="card-title">{{ equip.equipName }}</h5>
-            <p class="card-text">{{ equip.equipDescription }}</p>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Rental By Month: {{ equip. }} $</a>
-                <a class="dropdown-item" href="#">Rental By Season: {{ equip. }} $</a>
+    <div class='container back p-5'>
+            <a class="nav-link" href="/category/Ski Boots" btn>
+                <div class="card_wrapper">
+                    <div class="card mx-auto mt-3 mb-3 "> <img class='img-thumbnail m-3 card_image' src="/images/Men-boot-scott.jpg" />
+                        <div class="card-body text-center">
+                            <div >
+                                <p class="card-title font-weight-bold">Ski Boots</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a class="nav-link" href="/category/Goggles" btn>
+                <div class="card_wrapper">
+                    <div class="card mx-auto mt-3 mb-3 "> <img class='img-thumbnail m-3 card_image' src="/images/Kids-ski-race.jpg" />
+                        <div class="card-body text-center">
+                            <div >
+                                <p class="card-title font-weight-bold">Goggles</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a class="nav-link" href="/category/Ski Bindings" btn>
+                <div class="card_wrapper">
+                    <div class="card mx-auto mt-3 mb-3 "> <img class='img-thumbnail m-3 card_image' src="/images/Men-ski-westcoast.jpg" />
+                        <div class="card-body text-center">
+                            <div >
+                                <p class="card-title font-weight-bold">Ski Bindings</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        <a class="nav-link" href="/category/Helmet" btn>
+            <div class="card_wrapper">
+                <div class="card mx-auto mt-3 mb-3 "> <img class='img-thumbnail m-3 card_image' src="/images/Kids-helmet.jpg" />
+                    <div class="card-body text-center">
+                        <div >
+                            <p class="card-title font-weight-bold">Helmet</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <a href="#" class="btn btn-primary">Add to Cart</a>
-        </div>
+        </a>
+        <a class="nav-link" href="/category/Snowboard Boots" btn>
+            <div class="card_wrapper">
+                <div class="card mx-auto mt-3 mb-3 "> <img class='img-thumbnail m-3 card_image' src="/images/Women-boot-atomic.jpg" />
+                    <div class="card-body text-center">
+                        <div >
+                            <p class="card-title font-weight-bold">Snowboard Boots</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="nav-link" href="/category/SnowBoard Bindings" btn>
+            <div class="card_wrapper">
+                <div class="card mx-auto mt-3 mb-3 "> <img class='img-thumbnail m-3 card_image' src="/images/Men-ski-alpine.jpg" />
+                    <div class="card-body text-center">
+                        <div >
+                            <p class="card-title font-weight-bold">SnowBoard Bindings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
     </div>
-    {% endfor %}
 {% endblock content %}
