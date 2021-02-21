@@ -17,12 +17,10 @@
                 </div>
             </div>
             <form method="POST" class="col-md-9">
-                {% if errors %}
-                    <ul class="errorList">
+                {% if errors %}  
                         {% for e in errors %}
-                            <li>{{ e }}</li>
-                        {% endfor %}
-                    </ul>
+                        <p class="form-control is-invalid text-white bg-danger">{{ e }}</p>
+                        {% endfor %} 
                 {% endif %}
                 <div class="form-group">
                     <label for="loginEmail">Email address or User name</label>

@@ -50,18 +50,28 @@
         $itemsInStock = $request->getParam('itemsInStock');
         $description = $request->getParam('description');
         //
+
+    //     echo "<pre>\n";
+    // print_r($category);
+    // echo "</pre>\n";
+    // die("\nstop here");
         $errorList = [];
-        if (strlen($description) < 2 || strlen($description) > 2000) {
-            $errorList[] = "Item description must be 2-2000 characters long";
+        if (strlen($description) < 2 || strlen($description) > 1000) {
+            $errorList[] = "Product description must be 2-1000 characters long";
         }
         if (preg_match('/^[a-zA-Z0-9 ,\.-]{2,100}$/', $equipName) !== 1) {
-            $errorList[] = "Seller's name must be 2-100 characters long made up of letters, digits, space, comma, dot, dash";
+            $errorList[] = "Product's name must be 2-100 characters long made up of letters, digits, space, comma, dot, dash";
         }
     
     
-        if (!is_numeric($itemsInStock) || $itemsInStock < 0 || $itemsInStock > 99999999.99) {
-            $errorList[] = "Initial bid price must be a number between 0 and 99,999,999.99";
-            $log->debug("Initial bid price must be a number between 0 and 99,999,999.99");
+        if (!is_numeric($itemsInStock) || $itemsInStock < 0 || $itemsInStock > 99999999) {
+            $errorList[] = "In-stock must be a number";
+            $log->debug("In-Stock must be a number between 0 and 99,999,999");
+        }
+
+        if ($category == 'Choose...') {
+            $errorList[] = "You have to select product category";
+            $log->debug(" product category is Null");
         }
         // Verify image
         $uploadedImagePath = null;
@@ -84,7 +94,7 @@
             'category' => $category, 'inStock' => $itemsInStock
         ];
         if ($errorList) { // STATE 2: errors - redisplay the form
-            return $this->view->render($response, 'addequip.html.twig', ['errorList' => $errorList, 'v' => $valuesList]);
+            return $this->view->render($response, 'addequip.html.twig', ['errors' => $errorList, 'v' => $valuesList]);
                 
             
         } else { // STATE 3: success

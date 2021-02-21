@@ -69,7 +69,7 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
     if (strlen($province) < 2 || strlen($province) > 30) {
         $errorList['province'] = "Province must be 2-30 characters long";
     }
-    if(!preg_match("/^[A-Za-z0-9]{3} [A-Za-z0-9]{3}$/", $postCode)) {
+    if(!preg_match("/^[A-Za-z0-9_ ]{3,4}[A-Za-z0-9]{3}$/", $postCode)) {
         $errorList['postalCode'] = "PostalCode: " . $postCode . " must be in XXX YYY format";
     }
     if (strcmp($isAgree, 'on') <> 0 ) {
@@ -123,7 +123,7 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
         $_SESSION['user'] = DB::queryFirstRow("SELECT * FROM users WHERE email = %s",$email);
         $log->debug(sprintf("Register new user successfully: email %s, username %s, uid=%d", $email, $userName, $_SERVER['REMOTE_ADDR']));
         setFlashMessage("Register New User Successfully");
-        return $response->withRedirect("/");
+        return $response->withRedirect("/productlines");
     }
 });
 
@@ -224,7 +224,7 @@ $app->post('/login', function ($request, $response, $args) use ($log) {
         $_SESSION['user'] = $record; // remember user logged in
         $log->debug(sprintf("Login successful for email or username: %s, uid=%d, from %s", $emailOrUsername, $record['id'], $_SERVER['REMOTE_ADDR']));
         setFlashMessage("Login Successfully");
-        return $response->withRedirect("/");
+        return $response->withRedirect("/productlines");
     }
 });
 
@@ -233,7 +233,7 @@ $app->get('/logout', function ($request, $response, $args) use ($log) {
         $log->debug(sprintf("Logout successful for uid=%d, from %s", @$_SESSION['user']['id'], $_SERVER['REMOTE_ADDR']));
         unset($_SESSION['user']);
         setFlashMessage("You have been logout!");
-        return $response->withRedirect("/");
+        return $response->withRedirect("/productlines");
     }
 });
 
@@ -351,7 +351,7 @@ $app->post('/account', function ($request, $response, $args) use ($log) {
             $_SESSION['user'] = DB::queryFirstRow("SELECT * FROM users WHERE id = %d",$originUser['id']);
             $log->debug(sprintf("Update user account successfully: new email %s, new username %s, uid=%d", $_SESSION['user']['email'], $_SESSION['username'], $_SERVER['REMOTE_ADDR']));
             setFlashMessage("Update user account successfully");
-            return $response->withRedirect("/");
+            return $response->withRedirect("/productlines");
         }
 
     }else{
