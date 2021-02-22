@@ -128,13 +128,13 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
 });
 
 // used via AJAX
-$app->get('/register/isemailtaken/{email}', function ($request, $response, $args) use ($log) {
+$app->get('/isemailtaken/{email}', function ($request, $response, $args) use ($log) {
     // get email address from url
     $email = isset($args['email']) ? $args['email'] : "";
     $record = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
     if ($record) {
         $log->debug(sprintf("Internal Error: duplicate email %s, uid=%d", $email, $_SERVER['REMOTE_ADDR']));
-        return $response->write("Email already in use");
+        return $response->write("Email already in use, please try to login");
     } else {
         return $response->write("");
     }
