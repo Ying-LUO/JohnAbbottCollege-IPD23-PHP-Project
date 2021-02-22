@@ -65,8 +65,8 @@
         if (strlen($city) < 2 || strlen($city) > 100) {
             $errorList['city'] = "City must be 2-100 characters long";
         }
-        if (strlen($province) < 2 || strlen($province) > 30) {
-            $errorList['province'] = "Province must be 2-30 characters long";
+        if (!isset($province)) {
+            $errorList['province'] = "Province must be provided";
         }
         if(!preg_match("/^[A-Za-z0-9]{3} [A-Za-z0-9]{3}$/", $postCode)) {
             $errorList['postalCode'] = "PostalCode: " . $postCode . " must be in XXX YYY format";

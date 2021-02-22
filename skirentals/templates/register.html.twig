@@ -74,7 +74,8 @@
                     <div class="col-md-4 mb-3">
                         <label for="inputProvince">Province</label>
                         <select name="province" id="inputProvince" class="form-control" required>
-                            <option value="AB" {% if prevInput.province == 'AB' %} selected="selected"{% endif %}>AB	Alberta</option>
+                            <option selected>Choose...</option>
+                            <option value="AB" {% if prevInput.province == 'AB' %} selected="selected" {% endif %}>AB	Alberta</option>
                             <option value="BC" {% if prevInput.province == 'BC' %} selected="selected"{% endif %}>BC	British Columbia</option>
                             <option value="MB" {% if prevInput.province == 'MB' %} selected="selected"{% endif %}>MB	Manitoba</option>
                             <option value="NB" {% if prevInput.province == 'NB' %} selected="selected"{% endif %}>NB	New Brunswick</option>
@@ -84,12 +85,11 @@
                             <option value="NU" {% if prevInput.province == 'NU' %} selected="selected"{% endif %}>NU	Nunavut</option>
                             <option value="ON" {% if prevInput.province == 'ON' %} selected="selected"{% endif %}>ON	Ontario</option>
                             <option value="PE" {% if prevInput.province == 'PE' %} selected="selected"{% endif %}>PE	Prince Edward Island</option>
-                            <option value="QC" selected>QC	Québec</option>
+                            <option value="QC" {% if prevInput.province == 'QC' %} selected="selected"{% endif %}>QC	Québec</option>
                             <option value="SK" {% if prevInput.province == 'SK' %} selected="selected"{% endif %}>SK	Saskatchewan</option>
                             <option value="YT" {% if prevInput.province == 'YT' %} selected="selected"{% endif %}>YT	Yukon</option>
                         </select>
-                        <input name="province" type="text" class="form-control" id="inputProvince" placeholder="QC Quebec" value="{{ prevInput.province }}" required>
-                    </div>
+                        </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputPostalCode">Postal Code</label>
                         <input name="postCode" type="text" class="form-control" id="inputPostalCode" value="{{ prevInput.postalCode }}" placeholder="A1B 2C3" required>
