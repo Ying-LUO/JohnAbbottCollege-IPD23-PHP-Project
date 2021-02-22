@@ -68,7 +68,7 @@
                   </li>
                   {% if userSession.role == 'admin' %}
                       <li class="nav-item">
-                          <a class="nav-link" href="/admin">
+                          <a class="nav-link" href="/admin/equipments/list">
                               <i class="fa fa-pencil">
                                   <span class="badge badge-danger"></span>
                               </i>
@@ -133,13 +133,16 @@
             <p class="py-2 px-4 text-primary float-sm-right">You are logged in as <b>{{ userSession.username }}</b></p>
         {% endif %}
         {% if flashMessage %}
-            <div id="flashMessage" class="alert alert-primary">
+            <div id="flashMessage" class="alert alert-info">
                 {{flashMessage}}
             </div>
         {% endif %}
-        {% block content %}
+        <div class="overflow-auto">
+            {% block content %}
 
-        {% endblock content %}
+            {% endblock content %}
+        </div>
+
     </div>
     
         {% block footer %}

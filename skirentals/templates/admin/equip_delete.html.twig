@@ -2,7 +2,7 @@
 
 {% block stylesheet %}<link rel="stylesheet" href="/styles/form_style.css" />{% endblock stylesheet%}
 
-{% block title %}Equipment management{% endblock %}
+{% block title %}Delete Equipment{% endblock %}
 
 {% block content %}
     <div class="py-5 px-5 container">
@@ -18,7 +18,7 @@
                     <div class="form-row">
                         <label class="control-label col-sm-3" for="itemname">Product Name</label>
                         <div class="col-md-12 mb-3">
-                            <input type="text" class="form-control" id="itemname" placeholder="Enter Item Name" value="{{ equipment.equipName }}" name="equipname">
+                            <input type="text" class="form-control" id="itemname" placeholder="Enter Item Name" value="{{ equipment.equipName }}" name="equipname" readonly>
                         </div>
                     </div>
                     <div class="form-row">
@@ -26,22 +26,13 @@
                             <label for="inputGroupSelect01">Category</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Category</span>
+                                    <span class="input-group-text" >{{ equipment.category }}</span>
                                 </div>
-                                <select class="custom-select" id="inputGroupSelect01" name="category" required>
-                                    <option selected>Choose...</option>
-                                    <option value="skiBoots" {% if equipment.category == 'skiBoots' %} selected="selected" {% endif %}>Ski Boots</option>
-                                    <option value="skiBindings" {% if equipment.category == 'skiBindings' %} selected="selected" {% endif %}>Ski Bindings</option>
-                                    <option value="Goggles" {% if equipment.category == 'goggle' %} selected="selected" {% endif %}>Goggles</option>
-                                    <option value="Helmets" {% if equipment.category == 'helmets' %} selected="selected" {% endif %}>Helmets</option>
-                                    <option value="snowboardBoots" {% if equipment.category == 'snowboardBoots' %} selected="selected" {% endif %}>Snow Board Boots</option>
-                                    <option value="snowboardBindings" {% if equipment.category == 'snowboardBindings' %} selected="selected" {% endif %}>Snow Board Binding</option>
-                                </select>
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="instock">In-Stock</label>
-                            <input type="text" class="form-control" id="instock" placeholder="Enter number of items in-stock" name="itemsInStock" value="{{ equipment.inStock }}">
+                            <input type="text" class="form-control" id="instock" placeholder="Enter number of items in-stock" name="itemsInStock" value="{{ equipment.inStock }}" readonly>
                         </div>
                     </div>
                     <div class="form-row ">
@@ -51,7 +42,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">$</span>
                                 </div>
-                                <input type="number" name="rateByMonth" value="{{ equipment.rateByMonth }}" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="rateByMonth" />
+                                <input type="number" readonly name="rateByMonth" value="{{ equipment.rateByMonth }}" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="rateByMonth" />
                             </div>
                         </div>
                         <div class="input-group mb-3 col-md-6">
@@ -60,7 +51,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">$</span>
                                 </div>
-                                <input type="number" name="rateBySeason" value="{{ equipment.rateBySeason }}" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="rateBySeason" />
+                                <input type="number" readonly name="rateBySeason" value="{{ equipment.rateBySeason }}" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="rateBySeason" />
                             </div>
                         </div>
                     </div>
@@ -68,20 +59,17 @@
                         <div class="col-md-6">
                             <img class="img-fluid" src="/uploads/{{ equipment.photo}}" alt="Responsive image">
                         </div>
-                        <div class="col-md-6 custom-file my-5 py-5">
-                            <input type="file" name="image" id="inputImage">
-                        </div>
                     </div>
                     <div class="form-row">
                         <label class="control-label col-sm-2" for="description1" >Description:</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="5" id="description1" name="description">{{ equipment.description }}</textarea>
+                            <textarea class="form-control" rows="5" id="description1" name="description" readonly>{{ equipment.description }}</textarea>
                         </div>
                     </div>
-                    <button class="my-3 btn btn-primary" type="submit">Save</button>
+                    <p class="my-2 form-control is-invalid text-white bg-danger">Confirm to delete this equipment? It's irreversible</p>
+                    <button class="my-2 btn btn-primary" type="submit">Delete</button>
                     <a href="/admin/equipments/list" class="my-2 mx-4 btn btn-primary " role="button" >Cancel</a>
                 </div>
-
             </form>
         </div>
     </div>

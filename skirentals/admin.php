@@ -140,14 +140,78 @@
                 $response = $response->withStatus(404);
                 return $this->view->render($response, '/error_notfound.html.twig');
             }
-            return $this->view->render($response, 'admin/equip_edit.html.twig', ['e'=>$originEquipment]);
+            return $this->view->render($response, 'admin/equip_edit.html.twig', ['equipment'=>$originEquipment]);
         }
     });
+
+    $app->get('/admin/equips/delete/{id:[0-9]+}', function($request, $response, $args) use($log){
+        if($args['id'] == 0){
+            $response = $response->withStatus(404);
+            return $this->view->render($response, '/error_notfound.html.twig');
+        }else{
+            $originEquipment = DB::queryFirstRow("SELECT * FROM equipments WHERE id=%d", $args['id']);
+            if(!$originEquipment){
+                $response = $response->withStatus(404);
+                return $this->view->render($response, '/error_notfound.html.twig');
+            }
+            return $this->view->render($response, 'admin/equip_delete.html.twig', ['equipment'=>$originEquipment]);
+        }
+    });
+
+    $app->post('/admin/equips/delete/{id:[0-9]+}', function($request, $response, $args) use($log){
+        if($args['id'] == 0){
+            $response = $response->withStatus(404);
+            return $this->view->render($response, '/error_notfound.html.twig');
+        }else{
+            $originEquipment = DB::queryFirstRow("SELECT * FROM equipments WHERE id=%d", $args['id']);
+            if(!$originEquipment){
+                $response = $response->withStatus(404);
+                return $this->view->render($response, '/error_notfound.html.twig');
+            }
+            DB::delete('equipments', "id=%d", $args['id']);
+            $log->debug(sprintf("Delete equipment id=%d successfully, uid=%d", $args['id'], $_SERVER['REMOTE_ADDR']));
+            setFlashMessage("Delete equipment Successfully");
+            return $response->withRedirect("/admin/equipments/list");
+        }
+    });
+
+$app->get('/admin/users/delete/{id:[0-9]+}', function($request, $response, $args) use($log){
+    if($args['id'] == 0){
+        $response = $response->withStatus(404);
+        return $this->view->render($response, '/error_notfound.html.twig');
+    }else{
+        $originUser = DB::queryFirstRow("SELECT * FROM users WHERE id=%d", $args['id']);
+        if(!$originUser){
+            $response = $response->withStatus(404);
+            return $this->view->render($response, '/error_notfound.html.twig');
+        }
+        return $this->view->render($response, 'admin/user_delete.html.twig', ['user'=>$originUser]);
+    }
+});
+
+$app->post('/admin/users/delete/{id:[0-9]+}', function($request, $response, $args) use($log){
+    if($args['id'] == 0){
+        $response = $response->withStatus(404);
+        return $this->view->render($response, '/error_notfound.html.twig');
+    }else{
+        $originUser = DB::queryFirstRow("SELECT * FROM users WHERE id=%d", $args['id']);
+        if(!$originUser){
+            $response = $response->withStatus(404);
+            return $this->view->render($response, '/error_notfound.html.twig');
+        }
+        DB::delete('users', "id=%d", $args['id']);
+        $log->debug(sprintf("Delete user id=%d successfully, uid=%d", $args['id'], $_SERVER['REMOTE_ADDR']));
+        setFlashMessage("Delete user Successfully");
+        return $response->withRedirect("/admin/users/list");
+    }
+});
 
     $app->post('/admin/equips/edit/{id:[0-9]+}', function ($request, $response, $args) use ($log) {
 
         $equipName = $request->getParam('equipname');
         $category = $request->getParam('category');
+        $rateByMonth = $request->getParam('rateByMonth');
+        $rateBySeason = $request->getParam('rateBySeason');
         $itemsInStock = $request->getParam('itemsInStock');
         $description = $request->getParam('description');
 
@@ -158,13 +222,18 @@
         if (preg_match('/^[a-zA-Z0-9 ,\.-]{2,100}$/', $equipName) !== 1) {
             $errorList[] = "Product's name must be 2-100 characters long made up of letters, digits, space, comma, dot, dash";
         }
-
-
-        if (!is_numeric($itemsInStock) || $itemsInStock < 0 || $itemsInStock > 99999999) {
+        if (!is_numeric($itemsInStock) || $itemsInStock < 0 || $itemsInStock > 100000) {
             $errorList[] = "In-stock must be a number";
-            $log->debug("In-Stock must be a number between 0 and 99,999,999");
+            $log->debug("In-Stock must be a number between 0 and 100000");
         }
-
+        if (!is_numeric($rateByMonth) || $rateByMonth < 0 || $rateByMonth > 100000) {
+            $errorList[] = "RateByMonth must be a number";
+            $log->debug("RateByMonth must be a number between 0 and 100000");
+        }
+        if (!is_numeric($rateBySeason) || $rateBySeason < 0 || $rateBySeason > 100000) {
+            $errorList[] = "RateBySeason must be a number";
+            $log->debug("RateBySeason must be a number between 0 and 100000");
+        }
         if ($category == 'Choose...') {
             $errorList[] = "You have to select product category";
             $log->debug(" product category is Null");
@@ -172,9 +241,7 @@
         // Verify image
         $uploadedImagePath = null;
         $uploadedImage = $request->getUploadedFiles()['image'];
-        if ($uploadedImage->getError() != UPLOAD_ERR_NO_FILE) { //was anything uploaded?
-            print_r($uploadedImage->getError());
-
+        if ($uploadedImage->getError() != UPLOAD_ERR_NO_FILE) {
             $result = verifyUploadedPhoto($uploadedImagePath, $uploadedImage);
             if ($result !== TRUE) {
                 $errorList[] = $result;
@@ -183,25 +250,31 @@
 
         $valuesList = [
             'description' => $description, 'equipName' => $equipName,
+            'rateByMonth' => $rateByMonth, 'rateBySeason' => $rateBySeason,
             'category' => $category, 'inStock' => $itemsInStock
         ];
         if ($errorList) { // STATE 2: errors - redisplay the form
-            return $this->view->render($response, 'admin/equip_edit.html.twig', ['errors' => $errorList, 'v' => $valuesList]);
-
-
+            $log->error(sprintf("Update equipment id=%s failed by %s: uid=%d", $args['id'], $_SESSION['username'], $_SERVER['REMOTE_ADDR']));
+            return $this->view->render($response, 'admin/equip_edit.html.twig', ['errors' => $errorList, 'equipment' => $valuesList]);
         } else { // STATE 3: success
             if ($uploadedImagePath != null) {
                 $directory = $this->get('upload_directory');
                 $uploadedImagePath = moveUploadedFile($directory, $uploadedImage);
             }
-
-            DB::insert('equipments', ['description' => $description, 'equipName' => $equipName,
-                'category' => $category, 'inStock' => $itemsInStock, 'photo' => $uploadedImagePath]);
-
-            return $this->view->render($response, 'admin/equips_list.html.twig');
+            $newEquip = ['description' => $description, 'equipName' => $equipName, 'rateByMonth' => $rateByMonth, 'rateBySeason' => $rateBySeason,
+                'category' => $category, 'inStock' => $itemsInStock, 'photo' => $uploadedImagePath];
+            if($args['id'] == 0){
+                DB::insert('equipments', $newEquip);
+                $log->debug(sprintf("Add new equipment successfully by %s: uid=%d", $_SESSION['username'], $_SERVER['REMOTE_ADDR']));
+            }else{
+                $originEquipment = DB::queryFirstRow("SELECT * FROM equipments WHERE id=%d", $args['id']);
+                DB::update('equipments', $newEquip, "id=%d", $originEquipment['id']);
+                $log->debug(sprintf("Update equipment successfully by %s: uid=%d", $_SESSION['username'], $_SERVER['REMOTE_ADDR']));
+                setFlashMessage("Update equipment successfully");
+            }
+            return $response->withRedirect("/admin/equipments/list");
         }
     });
-
 
     // returns TRUE on success
     // returns a string with error message on failure
