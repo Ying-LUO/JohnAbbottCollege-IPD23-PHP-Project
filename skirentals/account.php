@@ -201,7 +201,7 @@ $app->post('/login', function ($request, $response, $args) use ($log) {
     $errorList = [];
     $emailOrUsername = $request->getParam('emailOrUsername');
     $password = $request->getParam('password');
-    $record = DB::queryFirstRow("SELECT id, email, password, username FROM users WHERE (email=%s) OR (username=%s)", $emailOrUsername, $emailOrUsername);
+    $record = DB::queryFirstRow("SELECT * FROM users WHERE (email=%s) OR (username=%s)", $emailOrUsername, $emailOrUsername);
     $loginSuccess = false;
     if ($record) {
         global $passwordPepper;

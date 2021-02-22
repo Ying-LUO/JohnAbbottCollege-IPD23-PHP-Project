@@ -22,9 +22,16 @@
             
           throw new Slim\Exception\NotFoundException($request, $response); // this will cause 404
       }
-      $equipList = DB::query("SELECT equipName, photo FROM equipments WHERE category=%s", $cat);
+      $equipList = DB::query("SELECT * FROM equipments WHERE category=%s", $cat);
       return $this->view->render($response, 'category.html.twig', ['equipList' => $equipList]);
   });
+
+  $app->get('/itemdetails/{id:[0-9]+}', function ($request, $response, $args) {
+
+     $selectedItem = DB::queryFirstRow("SELECT * FROM equipments WHERE id=%i", $args['id']);
+
+   return $this->view->render($response, 'itemdetails.html.twig', ['selectedItem' =>  $selectedItem]);
+});
 
   
   

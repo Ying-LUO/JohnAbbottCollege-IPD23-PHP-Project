@@ -1,6 +1,6 @@
 {% extends "master.html.twig" %}
 
-{% block stylesheet %}<link rel="stylesheet" href="/styles/addequip_style.css" />{% endblock stylesheet%}
+{% block stylesheet %}<link rel="stylesheet" href="/styles/addequip_style.css" />{% endblock stylesheet %}
 
 {% block title %}
     Register New User
@@ -21,11 +21,9 @@
 
                 <p class="form-control is-invalid text-white bg-danger d-none" id="err"></p>
                 {% if errors %}
-                    <!-- <ul class="errorList"> -->
                         {% for e in errors %}
                         <p class="form-control is-invalid text-white bg-danger">{{ e }}</p>
-                        {% endfor %}
-                    <!-- </ul> -->
+                        {% endfor %}     
                 {% endif %}
                 <div class="form-row">
                     <div class="col-md-6 mb-3">
@@ -150,22 +148,18 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script>
                 $(document).ready(function() {
-                    $err =  $('#err');
-                    $('input[name=email]').on("blur",function() {
-                     var email = $(this).val();
-                     
-                    email = encodeURIComponent(email);
-                    $err.load("/isemailtaken/" + email);
                     
-                    if($err.is(':empty')){
-                        $err.addClass("d-none");          
-                    }else{
-                        $err.removeClass("d-none");
-                    }
-            });
-
-        });
-    </script>
-        });
+                    $('input[name=email]').focusout(function() {
+                        var email = $(this).val();
+                        $err =  $('#err');
+                        email = encodeURIComponent(email);
+                        $err.load("/isemailtaken/" + email);
+                        if($err.is(':empty')){
+                            $err.addClass("d-none");          
+                        } else{
+                            $err.removeClass("d-none");
+                        }
+                    });
+                });
     </script>
 {% endblock scripts %}

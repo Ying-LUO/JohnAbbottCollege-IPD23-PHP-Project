@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link rel="stylesheet" href="/styles/styles.css" />
-        {% block stylesheet %}{% endblock stylesheet%}
+        {% block stylesheet %}{% endblock stylesheet %}
     {% endblock %}
     <title>{% block title %}{% endblock %} - My Webpage</title>    
 </head>
@@ -66,16 +66,27 @@
                           Contact
                       </a>
                   </li>
+                {% if userSession.role == 'admin' %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="/addequip">
+                        <i class="fa fa-plus">
+                            <span class="badge badge-danger"></span>
+                        </i>
+                        Add Item
+                    </a>
+                </li>
+            {% endif %}
               </ul>
-              <li class="nav-item">
+              <li class="navbar-brand">
                   <a class="nav-link" href="/cart">
-                      <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                      <i class="fa fa-shopping-cart text-light" aria-hidden="true"></i>
                       <span class="badge badge-danger"></span>
                   </a>
               </li>
               <form class="form-inline my-2 my-lg-0">
                   <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                  
+                  <button class="btn btn-outline-primary my-2 my-sm-0 mr-3" type="submit">Search</button>
               </form>
               <ul class="navbar-nav ">
                   {# {% block header %} #}
@@ -127,9 +138,7 @@
                 {{flashMessage}}
             </div>
         {% endif %}
-        {% block content %}
-
-        {% endblock content %}
+        {% block content %}{% endblock content %}
     </div>
     
         {% block footer %}
@@ -162,7 +171,9 @@
   </div>
         {% endblock footer %}
     </div>
-    {% block scripts %}{% endblock scripts %}
+    {% block scripts %}
+    
+    {% endblock scripts %}
 </body>
 
 </html>
