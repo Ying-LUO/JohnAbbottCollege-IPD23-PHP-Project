@@ -139,7 +139,7 @@
                 $response = $response->withStatus(404);
                 return $this->view->render($response, '/error_notfound.html.twig');
             }
-            return $this->view->render($response, 'admin/equip_edit.html.twig', ['equip'=>$equipment]);
+            return $this->view->render($response, 'admin/equip_edit.html.twig', ['e'=>$equipment]);
         }
     });
 
