@@ -6,6 +6,7 @@
     Register New User
 {% endblock title %}
 
+
 {% block content %}
     <div class="py-5 container">
         <div class="row">
@@ -17,6 +18,8 @@
                 </div>
             </div>
             <form method="POST" class="col-md-9">
+
+                <p class="form-control is-invalid text-white bg-danger d-none" id="err"></p>
                 {% if errors %}
                     <!-- <ul class="errorList"> -->
                         {% for e in errors %}
@@ -94,10 +97,9 @@
 {% endblock content %}
 
 {% block scripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>
+    
 
-        $(document).ready(function(){
+        <!-- $(document).ready(function(){
             $('input[name=email]').on('keyup keypress',function (){
                 let email = $('input[name=email]').val();
                 $('#isTaken').load('/register/isemailtaken/' + email);
@@ -106,7 +108,28 @@
 
         $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
             console.log("Ajax error occured on " + settings.url);
-            alert("Ajax error occured");
+            alert("Ajax error occured"); -->
+
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    $err =  $('#err');
+                    $('input[name=email]').on("blur",function() {
+                     var email = $(this).val();
+                     
+                    email = encodeURIComponent(email);
+                    $err.load("/isemailtaken/" + email);
+                    
+                    if($err.is(':empty')){
+                        $err.addClass("d-none");          
+                    }else{
+                        $err.removeClass("d-none");
+                    }
+            });
+
+        });
+    </script>
         });
     </script>
 {% endblock scripts %}
