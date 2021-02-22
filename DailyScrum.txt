@@ -181,12 +181,15 @@ Khalil
 
 1- Todo:
 	
-	* working on shopping cart
+	* working on Item details
+	*fix Ajax
+	* add equipment for admin
 	
 2- Done
 	
 	* fix category and session
-	* working on some styles.	
+	* working on some styles.
+	*finising 80% of item details	
 
 3- Need assistant
 
@@ -211,10 +214,11 @@ Khalil
 1- Todo:
 	
 	* working on shopping cart
+	* orders
 	
 2- Done
 	
-	* fix category and session
+	* finising 20% of item details
 	* working on some styles.	
 
 3- Need assistant
