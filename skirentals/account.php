@@ -418,7 +418,7 @@ $app->post('/passreset_request', function ($request, $response, $args) use ($log
             $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail();
             $sendSmtpEmail->setSubject("Password reset for skirentals.ipd23.com");
             $sendSmtpEmail->setSender(new \SendinBlue\Client\Model\SendSmtpEmailSender(
-                ['name' => 'No-Reply', 'email' => 'noreply@teacher.ip20.com']) );
+                ['name' => 'No-Reply from Ski Rentals', 'email' => 'noreply@teacher.ip20.com']) );
             $sendSmtpEmail->setTo([ new \SendinBlue\Client\Model\SendSmtpEmailTo(
                 ['name' => $user['username'], 'email' => $email])  ]);
             $sendSmtpEmail->setHtmlContent($emailBody);
