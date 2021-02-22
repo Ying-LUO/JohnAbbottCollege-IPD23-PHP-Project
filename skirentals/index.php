@@ -25,7 +25,6 @@ $app->get('/', function ($request, $response, $args) {
 // Define app routes below
 require_once 'account.php';
 require_once "admin.php";
-require_once "addequip.php";
 require_once "productlines.php";
 require_once "cart.php";
 

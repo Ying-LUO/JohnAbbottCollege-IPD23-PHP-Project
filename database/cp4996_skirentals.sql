@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 20, 2021 at 12:54 PM
+-- Generation Time: Feb 21, 2021 at 05:24 PM
 -- Server version: 10.3.27-MariaDB-log
 -- PHP Version: 7.3.6
 
@@ -45,7 +45,7 @@ CREATE TABLE `cartitems` (
 CREATE TABLE `equipments` (
   `id` int(11) NOT NULL,
   `equipName` varchar(100) NOT NULL,
-  `equipDescription` text NOT NULL,
+  `description` text NOT NULL,
   `rateByMonth` decimal(10,2) NOT NULL DEFAULT 20.00,
   `rateBySeason` decimal(10,2) NOT NULL DEFAULT 100.00,
   `photo` varchar(320) DEFAULT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE `equipments` (
 -- Dumping data for table `equipments`
 --
 
-INSERT INTO `equipments` (`id`, `equipName`, `equipDescription`, `rateByMonth`, `rateBySeason`, `photo`, `inStock`, `category`) VALUES
+INSERT INTO `equipments` (`id`, `equipName`, `description`, `rateByMonth`, `rateBySeason`, `photo`, `inStock`, `category`) VALUES
 (1, 'Ski Boot-1', 'This is very good one!', 20.00, 100.00, NULL, 6, '');
 
 -- --------------------------------------------------------

@@ -103,7 +103,7 @@ Day 05 / 2021-02-18
 ============================
 Ying:
 1- Todo:
-	
+	1. finished the login/register parts
 2- Done
 	1. study the video of password reset
 3- Need assistant
@@ -133,9 +133,10 @@ Ying:
 	*fix the problem in register.php
 	*fix the ajax error
 
-
 2- Done
 	*refactor the format of login/register form
+	*finished user login/register/account page
+	*finished the session user display
 
 3- Need assistant
 
@@ -162,21 +163,48 @@ Khalil
 
 
 
-Day 06 / 2021-02-20, 21
+Day 07 / 2021-02-20, 21
 ============================
 Ying:
 1- Todo:
-	*fix the problem in register.php
-	*fix the ajax error
-
+	*working on the password reset mail service part
+	*working on the admin part for equipment / user CRUD
 
 2- Done
-	*refactor the format of login/register form
+	*finished the password reset page
+	*finished the flash message update
+
+3- Need assistant
+	
+
+Khalil
+
+1- Todo:
+	
+	* working on shopping cart
+	
+2- Done
+	
+	* fix category and session
+	* working on some styles.	
 
 3- Need assistant
 
-	*blocked by the issue in register and ajax, need help to fix
+Day 08 / 2021-02-22
+============================
+Ying:
+1- Todo:
+	*working on the admin part for orders
+	*working on the order page
+	*working on the paginated
+	*working on the contact sending mail
 
+2- Done
+	*finished the password reset mail service part
+	*finish the admin part for equipment / user CRUD
+
+3- Need assistant
+	
 
 Khalil
 

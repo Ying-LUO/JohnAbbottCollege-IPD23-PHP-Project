@@ -1,28 +1,43 @@
-
 {% extends "admin/master.html.twig" %}
 
 {% block title %}User List{% endblock %}
 
 {% block content %}
-    <table border="1">
-        <tr>
-            <th>id</th>
-            <th>role</th>
-            <th>username</th>
-            <th>email</th>
-            <th>actions</th>
-        </tr>
-        {% for u in usersList %}
-        <tr>
-            <td>{{u.id}}</td>
-            <td>{{u.role}}</td>
-            <td>{{u.username}}</td>
-            <td>{{u.email}}</td>
-            <td>
-                <a href="/admin/users/{{u.id}}edit">edit</a>
-                <a href="/admin/users/{{u.id}}delete">delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col">ID</th>
+                    <th scope="col">ROLE</th>
+                    <th scope="col">FIRST NAME</th>
+                    <th scope="col">LAST NAME</th>
+                    <th scope="col">USERNAME</th>
+                    <th scope="col">EMAIL</th>
+                    <th scope="col">PHONE</th>
+                    <th scope="col">ADDRESS</th>
+                    <th scope="col">REGISTER AT</th>
+                    <th scope="col">ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in usersList %}
+                    <tr>
+                        <th scope="row">{{ u.id }}</th>
+                        <td>{{ u.role }}</td>
+                        <td>{{ u.firstName }}</td>
+                        <td>{{ u.lastName }}</td>
+                        <td>{{ u.username }}</td>
+                        <td>{{ u.email }}</td>
+                        <td>{{ u.phone }}</td>
+                        <td>{{ u.street ~ ' , ' ~ u.city ~ ' , ' ~ u.province ~ ' , ' ~ u.postalCode}}</td>
+                        <td>{{ u.registerTS|date("Y-m-d") }}</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm active" role="button" aria-pressed="true" href="/admin/users/edit/{{ u.id }}">edit</a>
+                            <a class="btn btn-primary btn-sm active" role="button" aria-pressed="true" href="/admin/users/delete/{{ u.id }}">delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

@@ -1,48 +1,33 @@
-{% extends "master.html.twig" %}
+{% extends "/admin/master.html.twig" %}
 
-{% block stylesheet %}<link rel="stylesheet" href="/styles/addequip_style.css" />{% endblock stylesheet %}
+{% block stylesheet %}<link rel="stylesheet" href="/styles/form_style.css" />{% endblock stylesheet%}
 
 {% block title %}
-    My Account
+    Update User Account
 {% endblock title %}
 
 {% block content %}
     <div class="py-5 container">
         <div class="row">
-            <div class="col-md-3">
-                <div class="contact-info">
-                    <img src="/images/skiing-solid.svg" alt="image"/>
-                    <h3>My Account</h3>
-                    <p>Please update your profile and submit</p>
-                </div>
-            </div>
             <form method="POST" class="col-md-9" read-only>
-                {% if errors %}    
-                        {% for e in errors %}
-                        <p class="form-control is-invalid text-white bg-danger">{{ e }}</p>                          
-                        {% endfor %}                
+                <p class="form-control text-danger" id="err"></p>
+                {% if errors %}
+                    {% for e in errors %}
+                        <p class="form-control is-invalid text-white bg-danger">{{ e }}</p>
+                    {% endfor %}
                 {% endif %}
                 <div class="form-row" >
                     <div class="col-md-6 mb-3">
                         <label for="inputFirstname">First Name</label>
                         <input name="firstName" type="text" class="form-control" id="inputFirstname" placeholder="First name" value="{{ user.firstName }}" required>
-                        <div class="invalid-feedback d-none">
-                            Invalid First Name
-                        </div>
                     </div>
                     <div class="col-md-6 mb-3" >
                         <label for="inputLastname">Last name</label>
                         <input name="lastName" type="text" class="form-control" id="inputLastname" placeholder="Last name" value="{{ user.lastName }}" required>
-                        <div class="invalid-feedback d-none">
-                            Invalid Last Name
-                        </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputUsername">Username</label>
                         <input name="userName" type="text" class="form-control" id="inputUsername" placeholder="User Name" value="{{ user.username }}" required>
-                        <div class="invalid-feedback d-none" id="isUserNameTaken">
-                            This username is taken, please choose another one
-                        </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputEmail">Email Address</label>
@@ -51,64 +36,55 @@
                                 <span class="input-group-text" id="inputEmail">@</span>
                             </div>
                             <input name="email" type="email" class="form-control" id="validationServerEmail" placeholder="Email Address" aria-describedby="inputGroupPrepend3" value="{{ user.email }}" required>
-                            <div class="invalid-feedback d-none" id="isEmailTaken">
-                                This email address is taken, please try to login
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="Phone">Phone Number</label>
                         <input name="phone" type="tel" class="form-control" id="Phone" placeholder="***-***-****" value="{{ user.phone }}" required>
-                        <div class="invalid-feedback d-none">
-                            Invalid Phone number
-                        </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="inputPassword">Password</label>
                         <input name="pass1" type="password" class="form-control" id="inputPassword" placeholder="Password" required>
-                        <div class="invalid-feedback d-none">
-                            Password invalid
-                        </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="confirmPassword">Confirm Password</label>
                         <input name="pass2" type="password" class="form-control" id="confirmPassword" placeholder="Password" required>
-                        <div class="invalid-feedback d-none">
-                            Password not match
-                        </div>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label for="inputAddress">Address</label>
                         <input name="street" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" value="{{ user.street }}" required>
-                        <div class="invalid-feedback d-none">
-                            Please provide a valid address.
-                        </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputCity">City</label>
                         <input name="city" type="text" class="form-control" id="inputCity" placeholder="City" value="{{ user.city }}" required>
-                        <div class="invalid-feedback d-none">
-                            Please provide a valid city.
-                        </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputProvince">Province</label>
-                        <input name="province" type="text" class="form-control" id="inputProvince" placeholder="QC Quebec" value="{{ user.province }}" required>
-                        <div class="invalid-feedback d-none">
-                            Please choose a valid province.
-                        </div>
+                        <select name="province" id="inputProvince" class="form-control" required>
+                            <option selected>Choose...</option>
+                            <option value="AB" {% if user.province == 'AB' %} selected="selected" {% endif %}>AB	Alberta</option>
+                            <option value="BC" {% if user.province == 'BC' %} selected="selected"{% endif %}>BC	British Columbia</option>
+                            <option value="MB" {% if user.province == 'MB' %} selected="selected"{% endif %}>MB	Manitoba</option>
+                            <option value="NB" {% if user.province == 'NB' %} selected="selected"{% endif %}>NB	New Brunswick</option>
+                            <option value="NL" {% if user.province == 'NL' %} selected="selected"{% endif %}>NL	Newfoundland and Labrador</option>
+                            <option value="NT" {% if user.province == 'NT' %} selected="selected"{% endif %}>NT	Northwest Territories</option>
+                            <option value="NS" {% if user.province == 'NS' %} selected="selected"{% endif %}>NS	Nova Scotia	Nouvelle-Écosse</option>
+                            <option value="NU" {% if user.province == 'NU' %} selected="selected"{% endif %}>NU	Nunavut</option>
+                            <option value="ON" {% if user.province == 'ON' %} selected="selected"{% endif %}>ON	Ontario</option>
+                            <option value="PE" {% if user.province == 'PE' %} selected="selected"{% endif %}>PE	Prince Edward Island</option>
+                            <option value="QC" {% if user.province == 'QC' %} selected="selected"{% endif %}>QC	Québec</option>
+                            <option value="SK" {% if user.province == 'SK' %} selected="selected"{% endif %}>SK	Saskatchewan</option>
+                            <option value="YT" {% if user.province == 'YT' %} selected="selected"{% endif %}>YT	Yukon</option>
+                        </select>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputPostalCode">Postal Code</label>
                         <input name="postCode" type="text" class="form-control" id="inputPostalCode" placeholder="A1B 2C3" value="{{ user.postalCode }}" required>
-                        <div class="invalid-feedback d-none">
-                            Please provide a valid postal code.
-                        </div>
                     </div>
                 </div>
-                <button class="btn btn-primary" type="submit">Update My Account</button>
+                <button class="btn btn-primary" type="submit">Update User Account</button>
             </form>
         </div>
     </div>
@@ -116,23 +92,35 @@
 {% endblock content %}
 
 {% block scripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        $(document).ready(function() {
+            $err =  $('#err');
+            $('input[name=email]').on("blur",function() {
+                var email = $(this).val();
 
-        $(document).ready(function(){
-            $('input[name=email]').on('keyup keypress',function (){
-                let email = $('input[name=email]').val();
-                $('#isEmailTaken').load('/account/isemailtaken/' + email);
-            });
-            $('input[name=userName]').on('keyup keypress',function (){
-                let userName = $('input[name=userName]').val();
-                $('#isUserNameTaken').load('/account/isusernametaken/' + userName);
-            });
-        });
+                email = encodeURIComponent(email);
+                $err.load("/isemailtaken/" + email);
 
-        $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
-            console.log("Ajax error occured on " + settings.url);
-            alert("Ajax error occured");
+                if($err.is(':empty')){
+                    $err.addClass("d-none");
+                }else{
+                    $err.removeClass("d-none");
+                }
+            });
+            $('input[name=userName]').on("blur",function() {
+                var userName = $(this).val();
+
+                if(userName.length > 2){
+                    $err.load("/isusernametaken/" + userName);
+
+                    if($err.is(':empty')){
+                        $err.addClass("d-none");
+                    }else{
+                        $err.removeClass("d-none");
+                    }
+                }
+            });
         });
     </script>
 {% endblock scripts %}

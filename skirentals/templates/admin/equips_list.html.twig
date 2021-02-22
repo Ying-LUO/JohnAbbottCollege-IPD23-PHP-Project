@@ -1,0 +1,36 @@
+{% extends "admin/master.html.twig" %}
+
+{% block title %}Equipment List{% endblock %}
+
+{% block content %}
+    <a href="/admin/equips/edit/0" class="my-2 mx-4 float-sm-left btn btn-primary active" role="button" aria-pressed="true">Add New Equipment</a>
+    <table class="table table-hover">
+        <thead>
+        <tr class="table-primary">
+            <th scope="col">ID</th>
+            <th scope="col">CATEGORY</th>
+            <th scope="col">NAME</th>
+            <th scope="col">RATE BY MONTH</th>
+            <th scope="col">RATE BY SEASON</th>
+            <th scope="col">IN STOCK</th>
+            <th scope="col">ACTIONS</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for e in equipmentList %}
+            <tr>
+                <th scope="row">{{e.id}}</th>
+                <td>{{ e.category }}</td>
+                <td>{{ e.equipName }}</td>
+                <td>{{ e.rateByMonth }}</td>
+                <td>{{ e.rateBySeason }}</td>
+                <td>{{ e.inStock }}</td>
+                <td>
+                    <a class="btn btn-primary btn-sm active" role="button" aria-pressed="true" href="/admin/equips/edit/{{e.id}}">edit</a>
+                    <a class="btn btn-primary btn-sm active" role="button" aria-pressed="true" href="/admin/equips/delete/{{e.id}}">delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

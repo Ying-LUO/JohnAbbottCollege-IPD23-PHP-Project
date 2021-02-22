@@ -66,16 +66,16 @@
                           Contact
                       </a>
                   </li>
-                {% if userSession.role == 'admin' %}
-                  <li class="nav-item">
-                    <a class="nav-link" href="/addequip">
-                        <i class="fa fa-plus">
-                            <span class="badge badge-danger"></span>
-                        </i>
-                        Add Item
-                    </a>
-                </li>
-            {% endif %}
+                  {% if userSession.role == 'admin' %}
+                      <li class="nav-item">
+                          <a class="nav-link" href="/admin/equipments/list">
+                              <i class="fa fa-pencil">
+                                  <span class="badge badge-danger"></span>
+                              </i>
+                              Administrator
+                          </a>
+                      </li>
+                  {% endif %}
               </ul>
               <li class="navbar-brand">
                   <a class="nav-link" href="/cart">
@@ -134,11 +134,20 @@
             <p class="py-2 px-4 text-primary float-sm-right">You are logged in as <b>{{ userSession.username }}</b></p>
         {% endif %}
         {% if flashMessage %}
-            <div id="flashMessage" class="alert alert-primary">
+            <div id="flashMessage" class="alert alert-info">
                 {{flashMessage}}
             </div>
         {% endif %}
+<<<<<<< HEAD
         {% block content %}{% endblock content %}
+=======
+        <div class="overflow-auto">
+            {% block content %}
+
+            {% endblock content %}
+        </div>
+
+>>>>>>> 3f128a476d57420aa4f907d8e9869887f0ca4f47
     </div>
     
         {% block footer %}
@@ -151,7 +160,7 @@
           <li><a href="/productlines">Home</a></li>
           <li><a href="/productlines">Product Lines</a></li>
           <li><a href="#">About</a></li>
-          <li><a href="/Contact">Contact</a></li>
+          <li><a href="/contact">Contact</a></li>
           <li><a href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
     
         </ul>

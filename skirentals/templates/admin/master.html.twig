@@ -3,21 +3,26 @@
 
 <head>
     {% block head %}
+        {#
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"> #}
+
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="/styles/styles.css" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-        <title>{% block title %}{% endblock %} - Ski Rental</title>
+        <link rel="stylesheet" href="/styles/styles.css" />
+        {% block stylesheet %}{% endblock stylesheet%}
     {% endblock %}
+    <title>{% block title %}{% endblock %} - Admin Webpage</title>
 </head>
 
 <body>
-<div class="container">
+<div>
     {% block nav %}
         <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Ski Rentals</a>
+            <a class="navbar-brand" href="/productlines">Ski Rentals</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -25,199 +30,126 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="/productlines">
                             <i class="fa fa-home"></i>
                             Home
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-snowflake-o" aria-hidden="true"></i>
-                            <span class="badge badge-primary"></span>
-                            </i>
-                            Product Lines
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fa fa-university" aria-hidden="true"></i>
+                        <a class="nav-link" href="/admin/equipments/list">
+                            <i class="fa fa-tasks" aria-hidden="true"></i>
                             <span class="badge badge-danger"></span>
                             </i>
-                            Our Company
+                            Equipments
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fa fa-globe">
+                        <a class="nav-link" href="/admin/users/list">
+                            <i class="fa fa-id-card" aria-hidden="true"></i>
+                            <span class="badge badge-danger"></span>
+                            </i>
+                            Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/orders/list">
+                            <i class="fa fa-money">
                                 <span class="badge badge-danger"></span>
                             </i>
-                            Contact
+                            Orders
                         </a>
                     </li>
                 </ul>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                        <span class="badge badge-danger"></span>
-                    </a>
-                </li>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
                 </form>
                 <ul class="navbar-nav ">
-                    {% block header %}
-                        <div class="d-flex ">
-                            {% if session.user %}
-                                <span>You are logged in as <b>{{ session.user.name }}</b></span>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                        Setting
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/logout">
-                                        <i class="fa fa-sign-out" aria-hidden="true"></i>
-                                        </i>
-                                        Sign Out
-                                    </a>
-                                </li>
-                            {% else %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/register">
-                                        <i class="fa fa-user" aria-hidden="true"></i>
-                                        </i>
-                                        Register
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/login">
-                                        <i class="fa fa-sign-in" aria-hidden="true"></i>
-                                        </i>
-                                        Login
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </div>
-                    {% endblock header %}
+                    {# {% block header %} #}
+                    <div class="d-flex ">
+                        {% if userSession %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/account">
+                                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                    Setting
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/logout">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                    </i>
+                                    Sign Out
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/register">
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    </i>
+                                    Register
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/login">
+                                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                    </i>
+                                    Login
+                                </a>
+                            </li>
+                        {% endif %}
+                    </div>
+                    {# {% endblock header %} #}
                 </ul>
-
             </div>
         </nav>
     {% endblock nav %}
+</div>
 
+<div>
+    {% if userSession %}
+        <p class="py-2 px-4 text-primary float-sm-right">You are logged in as <b>{{ userSession.username }}</b></p>
+    {% endif %}
     {% if flashMessage %}
-        <div class="flashMessage">
+        <div id="flashMessage" class="alert alert-info">
             {{flashMessage}}
         </div>
     {% endif %}
-
     {% block content %}
+
     {% endblock content %}
+</div>
 
-    {% block scripts %}
-        {# for javascript, example:
-
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-            <script>
-                $(document).ready(function(){
-                    $('button#btAddToCart').click(function (){
-                        let productId = $(this).next("span").text();
-                        let quantity = $('input[name=quantity]').val();
-                        if(quantity == "" || quantity < 1){
-                            alert("Invalid quantity");
-                            return;
-                        }
-                        let url = '/addToCart?productId=' + productId
-                            +   '&quantity=' + quantity;
-                        $.get(url, function(data){
-                            alert(data);
-                        });
-                    });
-                });
-                $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
-                    console.log("Ajax error occured on " + settings.url);
-                    alert("Ajax error occured");
-                });
-            </script>
-
-        #}
-    {% endblock scripts %}
-
-    {% block footer %}
-        <!--footer starts from here-->
-        <footer class="footer">
-            <div class="container bottom_border">
-                <div class="row">
-                    <div class=" col-sm-4 col-md col-sm-4  col-12 col">
-                        <h5 class="headin5_amrc col_white_amrc pt2">Find us</h5>
-                        <!--headin5_amrc-->
-
-                        <p><i class="fa fa-location-arrow"></i> 21 275 Rue Lakeshore Road, Sainte-Anne-de-Bellevue, QC</p>
-                        <p><i class="fa fa-phone"></i>  +1-514 555 5555  </p>
-                        <p><i class="fa fa fa-envelope"></i> info@Team8.com  </p>
-
-
-                    </div>
-
-
-
-                    <div class=" col-sm-4 col-md  col-6 col">
-                        <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
-                        <!--headin5_amrc-->
-                        <ul class="footer_ul_amrc">
-                            <li><a href="http://webenlance.com">Remove Background</a></li>
-                            <li><a href="http://webenlance.com">Shadows & Mirror Reflection</a></li>
-                            <li><a href="http://webenlance.com">Logo Design</a></li>
-
-                        </ul>
-                        <!--footer_ul_amrc ends here-->
-                    </div>
-
-
-                    <div class=" col-sm-4 col-md  col-12 col">
-                        <h5 class="headin5_amrc col_white_amrc pt2">Follow us</h5>
-                        <!--headin5_amrc ends here-->
-
-                        <ul class="footer_ul2_amrc">
-                            <li><a href="http://facebook.com"><i class="fab fa-facebook-f"></i></a></li>
-                            <li><a href="http://tweeter.com"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="http://linkedin.com"><i class="fab fa-linkedin"></i></a></li>
-                            {# <li><a href="http://webenlance.com"><i class="fab fa-instagram"></i></a></li> #}
-                        </ul>
-                        <!--footer_ul2_amrc ends here-->
-                    </div>
-                </div>
-            </div>
+{% block footer %}
+    <!--footer starts from here-->
+    <div mt-5>
+        <footer class="footer fixed-bottom">
 
             <div class="container">
                 <ul class="foote_bottom_ul_amrc">
-                    <li><a href="http://webenlance.com">Home</a></li>
-                    <li><a href="http://webenlance.com">Product Lines</a></li>
-                    <li><a href="http://webenlance.com">About</a></li>
-                    <li><a href="http://webenlance.com">Contact</a></li>
-                    <li><a href="http://webenlance.com"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
-
+                    <li><a href="/productlines">Home</a></li>
+                    <li><a href="/productlines">Product Lines</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
                 </ul>
                 <!--foote_bottom_ul_amrc ends here-->
-                <p class="text-center">Copyright @2021 | Designed by <a href="#">Team 8</a></p>
+                <p class="text-center">Copyright @2021 | Designed by <a href="#">IPD23 - Team 8</a></p>
 
                 <ul class="social_footer_ul">
-
+                    <li><a href="http://facebook.com"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href="http://twitter.com"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="http://linkedin.com"><i class="fab fa-linkedin"></i></a></li>
+                    <li><a href="http://instagram.com"><i class="fab fa-instagram"></i></a></li>
                 </ul>
                 <!--social_footer_ul ends here-->
             </div>
 
         </footer>
-    {% endblock footer %}
+    </div>
+{% endblock footer %}
 </div>
+{% block scripts %}{% endblock scripts %}
 </body>
+
 </html>

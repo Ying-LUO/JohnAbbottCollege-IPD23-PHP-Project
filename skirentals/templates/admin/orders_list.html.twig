@@ -1,0 +1,45 @@
+{% extends "admin/master.html.twig" %}
+
+{% block title %}Order List{% endblock %}
+
+{% block content %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col">ID</th>
+                    <th scope="col">USERNAME</th>
+                    <th scope="col">EMAIL</th>
+                    <th scope="col">PHONE</th>
+                    <th scope="col">ORDER AT</th>
+                    <th scope="col">TOTAL PRICE</th>
+                    <th scope="col">PAYMENT</th>
+                    <th scope="col">EQUIPMENT</th>
+                    <th scope="col">QUANTITY</th>
+                    <th scope="col">RENTAL TYPE</th>
+                    <th scope="col">ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in usersList %}
+                    <tr>
+                        <th scope="row">{{ o.id }}</th>
+                        <td>{{ o.username }}</td>
+                        <td>{{ o.email }}</td>
+                        <td>{{ o.phone }}</td>
+                        <td>{{ o.orderTS }}</td>
+                        <td>{{ o.totalPrice }}</td>
+                        <td>{{ o.paymentType }}</td>
+                        <td>{{ o.equipName }}</td>
+                        <td>{{ o.quantity }}</td>
+                        <td>{{ o.rentalType}}</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm active" role="button" aria-pressed="true" href="/admin/users/refund/{{ u.id }}">refund</a>
+                            <a class="btn btn-primary btn-sm active" role="button" aria-pressed="true" href="/admin/users/delete/{{ u.id }}">delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

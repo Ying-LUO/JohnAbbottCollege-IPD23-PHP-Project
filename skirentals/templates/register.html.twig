@@ -1,9 +1,13 @@
 {% extends "master.html.twig" %}
 
-{% block stylesheet %}<link rel="stylesheet" href="/styles/addequip_style.css" />{% endblock stylesheet %}
+{% block stylesheet %}<link rel="stylesheet" href="/styles/form_style.css" />{% endblock stylesheet%}
 
 {% block title %}
-    Register New User
+    {% if userSession %}
+        My Account
+    {% else %}
+        Register New User
+    {% endif %}
 {% endblock title %}
 
 
@@ -13,39 +17,34 @@
             <div class="col-md-3">
                 <div class="contact-info">
                     <img src="/images/skiing-solid.svg" alt="image"/>
-                    <h3>Sign Up</h3>
-                    <p>To register new user, please input the information in list<br><br>All fields are required!</p>
+                    {% if userSession %}
+                        <h3>My Account</h3>
+                        <p>Please update your profile and submit</p>
+                    {% else %}
+                        <h3>Sign Up</h3>
+                        <p>To register new user, please input the information in list<br><br>All fields are required!</p>
+                    {% endif %}
                 </div>
             </div>
             <form method="POST" class="col-md-9">
-
-                <p class="form-control is-invalid text-white bg-danger d-none" id="err"></p>
+                <p class="form-control text-danger" id="err"></p>
                 {% if errors %}
-                        {% for e in errors %}
-                        <p class="form-control is-invalid text-white bg-danger">{{ e }}</p>
-                        {% endfor %}     
+                    {% for e in errors %}
+                    <p class="form-control is-invalid text-white bg-danger">{{ e }}</p>
+                    {% endfor %}
                 {% endif %}
                 <div class="form-row">
                     <div class="col-md-6 mb-3">
                         <label for="inputFirstname">First name</label>
-                        <input name="firstName" type="text" class="form-control" id="inputFirstname" value="{{ prevInput.firstName }}" placeholder="First name" required>
-                        <div class="invalid-feedback d-none">
-                            Invalid First Name
-                        </div>
+                        <input name="firstName" type="text" class="form-control" id="inputFirstname" value="{{ user.firstName }}" placeholder="First name" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="inputLastname">Last name</label>
-                        <input name="lastName" type="text" class="form-control" id="inputLastname" value="{{ prevInput.lastName }}" placeholder="Last name" required>
-                        <div class="invalid-feedback d-none">
-                            Invalid Last Name
-                        </div>
+                        <input name="lastName" type="text" class="form-control" id="inputLastname" value="{{ user.lastName }}" placeholder="Last name" required>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputUsername">Username</label>
-                        <input name="userName" type="text" class="form-control" id="inputUsername" value="{{ prevInput.userName }}" placeholder="User Name" required>
-                        <div class="invalid-feedback d-none">
-                            This username is taken, please choose another one
-                        </div>
+                        <input name="userName" type="text" class="form-control" id="inputUsername" value="{{ user.userName }}" placeholder="User Name" required>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputEmail">Email Address</label>
@@ -53,62 +52,53 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputEmail">@</span>
                             </div>
-                            <input name="email" value="{{ prevInput.email }}" type="email" class="form-control" id="validationServerEmail" placeholder="Email Address" aria-describedby="inputGroupPrepend3" required>
-                            <div class="invalid-feedback d-none" id="isTaken">
-                                This email address is taken, please try to login
-                            </div>
+                            <input name="email" value="{{ user.email }}" type="email" class="form-control" id="validationServerEmail" placeholder="Email Address" aria-describedby="inputGroupPrepend3" required>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="Phone">Phone Number</label>
-                        <input name="phone" type="text" class="form-control" id="Phone" value="{{ prevInput.phone }}" placeholder="***-***-****" required>
-                        <div class="invalid-feedback d-none">
-                            Invalid Phone number
-                        </div>
+                        <input name="phone" type="text" class="form-control" id="Phone" value="{{ user.phone }}" placeholder="***-***-****" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="inputPassword">Password</label>
-                        <input name="pass1" type="password" class="form-control" id="inputPassword" value="{{ prevInput.pass1 }}" placeholder="Password" required>
-                        <div class="invalid-feedback d-none">
-                            Password invalid
-                        </div>
+                        <input name="pass1" type="password" class="form-control" id="inputPassword" value="{{ user.pass1 }}" placeholder="Password" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="confirmPassword">Confirm Password</label>
-                        <input name="pass2" type="password" class="form-control" id="confirmPassword" value="{{ prevInput.pass2 }}" placeholder="Password" required>
-                        <div class="invalid-feedback d-none">
-                            Password not match
-                        </div>
+                        <input name="pass2" type="password" class="form-control" id="confirmPassword" value="{{ user.pass2 }}" placeholder="Password" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-12 mb-3">
                         <label for="inputAddress">Address</label>
-                        <input name="street" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" value="{{ prevInput.street }}" required>
-                        <div class="invalid-feedback d-none">
-                            Please provide a valid address.
-                        </div>
+                        <input name="street" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" value="{{ user.street }}" required>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputCity">City</label>
-                        <input name="city" type="text" class="form-control" id="inputCity" placeholder="City" value="{{ prevInput.city }}" required>
-                        <div class="invalid-feedback d-none">
-                            Please provide a valid city.
-                        </div>
+                        <input name="city" type="text" class="form-control" id="inputCity" placeholder="City" value="{{ user.city }}" required>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputProvince">Province</label>
-                        <input name="province" type="text" class="form-control" id="inputProvince" placeholder="QC Quebec" value="{{ prevInput.province }}" required>
-                        <div class="invalid-feedback d-none">
-                            Please choose a valid province.
+                        <select name="province" id="inputProvince" class="form-control" required>
+                            <option selected>Choose...</option>
+                            <option value="AB" {% if user.province == 'AB' %} selected="selected"{% endif %}>AB	Alberta</option>
+                            <option value="BC" {% if user.province == 'BC' %} selected="selected"{% endif %}>BC	British Columbia</option>
+                            <option value="MB" {% if user.province == 'MB' %} selected="selected"{% endif %}>MB	Manitoba</option>
+                            <option value="NB" {% if user.province == 'NB' %} selected="selected"{% endif %}>NB	New Brunswick</option>
+                            <option value="NL" {% if user.province == 'NL' %} selected="selected"{% endif %}>NL	Newfoundland and Labrador</option>
+                            <option value="NT" {% if user.province == 'NT' %} selected="selected"{% endif %}>NT	Northwest Territories</option>
+                            <option value="NS" {% if user.province == 'NS' %} selected="selected"{% endif %}>NS	Nova Scotia	Nouvelle-Écosse</option>
+                            <option value="NU" {% if user.province == 'NU' %} selected="selected"{% endif %}>NU	Nunavut</option>
+                            <option value="ON" {% if user.province == 'ON' %} selected="selected"{% endif %}>ON	Ontario</option>
+                            <option value="PE" {% if user.province == 'PE' %} selected="selected"{% endif %}>PE	Prince Edward Island</option>
+                            <option value="QC" {% if user.province == 'QC' %} selected="selected"{% endif %}>QC	Québec</option>
+                            <option value="SK" {% if user.province == 'SK' %} selected="selected"{% endif %}>SK	Saskatchewan</option>
+                            <option value="YT" {% if user.province == 'YT' %} selected="selected"{% endif %}>YT	Yukon</option>
+                        </select>
                         </div>
-                    </div>
                     <div class="col-md-4 mb-3">
                         <label for="inputPostalCode">Postal Code</label>
-                        <input name="postCode" type="text" class="form-control" id="inputPostalCode" value="{{ prevInput.postalCode }}" placeholder="A1B 2C3" required>
-                        <div class="invalid-feedback d-none">
-                            Please provide a valid postal code.
-                        </div>
+                        <input name="postCode" type="text" class="form-control" id="inputPostalCode" value="{{ user.postalCode }}" placeholder="A1B 2C3" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -117,49 +107,50 @@
                         <label class="form-check-label" for="invalidCheck3">
                             Agree to terms and conditions
                         </label>
-                        <div class="invalid-feedback d-none">
-                            You must agree before submitting.
-                        </div>
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit">Submit form</button>
             </form>
-            <a class="dropdown-item text-info" href="/login">Already has a user? Sign In</a>
+            {% if userSession %}
+                <span></span>
+            {% else %}
+                <a class="dropdown-item text-info" href="/login">Already has a user? Sign In</a>
+            {% endif %}
         </div>
     </div>
 
 {% endblock content %}
 
 {% block scripts %}
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $err =  $('#err');
+            $('input[name=email]').on("blur",function() {
+                var email = $(this).val();
 
-        <!-- $(document).ready(function(){
-            $('input[name=email]').on('keyup keypress',function (){
-                let email = $('input[name=email]').val();
-                $('#isTaken').load('/register/isemailtaken/' + email);
+                email = encodeURIComponent(email);
+                $err.load("/isemailtaken/" + email);
+
+                if($err.is(':empty')){
+                    $err.addClass("d-none");
+                }else{
+                    $err.removeClass("d-none");
+                }
+            });
+            $('input[name=userName]').on("blur",function() {
+                var userName = $(this).val();
+
+                if(userName.length > 2){
+                    $err.load("/isusernametaken/" + userName);
+
+                    if($err.is(':empty')){
+                        $err.addClass("d-none");
+                    }else{
+                        $err.removeClass("d-none");
+                    }
+                }
             });
         });
-
-        $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
-            console.log("Ajax error occured on " + settings.url);
-            alert("Ajax error occured"); -->
-
-
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script>
-                $(document).ready(function() {
-                    
-                    $('input[name=email]').focusout(function() {
-                        var email = $(this).val();
-                        $err =  $('#err');
-                        email = encodeURIComponent(email);
-                        $err.load("/isemailtaken/" + email);
-                        if($err.is(':empty')){
-                            $err.addClass("d-none");          
-                        } else{
-                            $err.removeClass("d-none");
-                        }
-                    });
-                });
     </script>
 {% endblock scripts %}
