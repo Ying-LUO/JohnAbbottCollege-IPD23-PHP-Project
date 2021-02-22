@@ -1,21 +1,14 @@
-{% extends "master.html.twig" %}
+{% extends "/admin/master.html.twig" %}
 
 {% block stylesheet %}<link rel="stylesheet" href="/styles/form_style.css" />{% endblock stylesheet%}
 
 {% block title %}
-    My Account
+    Update User Account
 {% endblock title %}
 
 {% block content %}
     <div class="py-5 container">
         <div class="row">
-            <div class="col-md-3">
-                <div class="contact-info">
-                    <img src="/images/skiing-solid.svg" alt="image"/>
-                    <h3>My Account</h3>
-                    <p>Please update your profile and submit</p>
-                </div>
-            </div>
             <form method="POST" class="col-md-9" read-only>
                 {% if errors %}    
                         {% for e in errors %}
@@ -75,7 +68,7 @@
                         <input name="postCode" type="text" class="form-control" id="inputPostalCode" placeholder="A1B 2C3" value="{{ user.postalCode }}" required>
                     </div>
                 </div>
-                <button class="btn btn-primary" type="submit">Update My Account</button>
+                <button class="btn btn-primary" type="submit">Update User Account</button>
             </form>
         </div>
     </div>

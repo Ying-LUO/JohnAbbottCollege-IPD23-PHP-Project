@@ -15,8 +15,8 @@ require_once 'init.php';
 $passwordPepper = 'vG3iNzWMwKARpChq5KDZ';
 
 // root page
-$app->get('/', function ($request, $response, $args) {
-    return $this->view->render($response, 'index.html.twig');
+$app->get('/admin', function ($request, $response, $args) {
+    return $this->view->render($response, 'admin/master.html.twig');
 });
 
 // STATE 1: first display of the form
@@ -127,55 +127,7 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
     }
 });
 
-// used via AJAX
-$app->get('/register/isemailtaken/{email}', function ($request, $response, $args) use ($log) {
-    // get email address from url
-    $email = isset($args['email']) ? $args['email'] : "";
-    $record = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
-    if ($record) {
-        $log->debug(sprintf("Internal Error: duplicate email %s, uid=%d", $email, $_SERVER['REMOTE_ADDR']));
-        return $response->write("Email already in use");
-    } else {
-        return $response->write("");
-    }
-});
-
-$app->get('/register/isusernametaken/{username}', function ($request, $response, $args) use ($log) {
-    // get username from url
-    $username = isset($args['username']) ? $args['username'] : "";
-    $record = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $username);
-    if ($record) {
-        $log->debug(sprintf("Internal Error: duplicate username %s, uid=%d", $username, $_SERVER['REMOTE_ADDR']));
-        return $response->write("UserName already in use");
-    } else {
-        return $response->write("");
-    }
-});
-
-// used via AJAX
-$app->get('/account/isemailtaken/{email}', function ($request, $response, $args) use ($log) {
-    // get email address from url
-    $email = isset($args['email']) ? $args['email'] : "";
-    $record = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
-    if ($record) {
-        $log->debug(sprintf("Internal Error: duplicate email %s, uid=%d", $email, $_SERVER['REMOTE_ADDR']));
-        return $response->write("Email already in use");
-    } else {
-        return $response->write("");
-    }
-});
-
-$app->get('/account/isusernametaken/{username}', function ($request, $response, $args) use ($log) {
-    // get username from url
-    $username = isset($args['username']) ? $args['username'] : "";
-    $record = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $username);
-    if ($record) {
-        $log->debug(sprintf("Internal Error: duplicate username %s, uid=%d", $username, $_SERVER['REMOTE_ADDR']));
-        return $response->write("UserName already in use");
-    } else {
-        return $response->write("");
-    }
-});
+//TODO: VALIDATE IF USERNAME/EMAIL IS TAKEN IN DB BY AJAX
 
 function verifyPasswordQuality($password) {
     if (strlen($password) < 6 || strlen($password) > 100
@@ -201,7 +153,7 @@ $app->post('/login', function ($request, $response, $args) use ($log) {
     $errorList = [];
     $emailOrUsername = $request->getParam('emailOrUsername');
     $password = $request->getParam('password');
-    $record = DB::queryFirstRow("SELECT id, email, password, username FROM users WHERE (email=%s) OR (username=%s)", $emailOrUsername, $emailOrUsername);
+    $record = DB::queryFirstRow("SELECT id, email, password, username, role FROM users WHERE (email=%s) OR (username=%s)", $emailOrUsername, $emailOrUsername);
     $loginSuccess = false;
     if ($record) {
         global $passwordPepper;
@@ -224,7 +176,11 @@ $app->post('/login', function ($request, $response, $args) use ($log) {
         $_SESSION['user'] = $record; // remember user logged in
         $log->debug(sprintf("Login successful for email or username: %s, uid=%d, from %s", $emailOrUsername, $record['id'], $_SERVER['REMOTE_ADDR']));
         setFlashMessage("Login Successfully");
-        return $response->withRedirect("/productlines");
+        if(strcmp($record['role'],'user') === 0){
+            return $response->withRedirect("/productlines");
+        }elseif(strcmp($record['role'],'admin') === 0){
+            return $response->withRedirect("/admin");
+        }
     }
 });
 
@@ -255,7 +211,6 @@ $app->post('/account', function ($request, $response, $args) use ($log) {
         $originUser = DB::queryFirstRow("SELECT * FROM users WHERE id=%d", $_SESSION['user']['id']);
     }
     if(isset($originUser)){
-
         $firstName = $request->getParam('firstName');
         $lastName = $request->getParam('lastName');
         $userName = $request->getParam('userName');
@@ -313,17 +268,15 @@ $app->post('/account', function ($request, $response, $args) use ($log) {
         }
 
         if ($errorList) {
-            $log->error(sprintf("Register failed: email %s, username %s, uid=%d", $email, $userName, $_SERVER['REMOTE_ADDR']));
+            $log->error(sprintf("Account information change failed: email %s, username %s, uid=%d", $email, $userName, $_SERVER['REMOTE_ADDR']));
             return $this->view->render($response, 'account.html.twig', [
                 'errors' => $errorList,
-                'prevInput' => [
+                'user' => [
                     'firstName' => $firstName,
                     'lastName' => $lastName,
-                    'userName' => $userName,
+                    'username' => $userName,
                     'phone' => $phone,
                     'email' => $email,
-                    'pass1' => $pass1,
-                    'pass2' => $pass2,
                     'street' => $street,
                     'city' => $city,
                     'province' => $province,
@@ -455,7 +408,7 @@ $app->post('/passresetaction/{secret}', function ($request, $response, $args) us
         DB::delete('passwordresets', 'secret=%s', $secret);
         $log->debug(sprintf('password reset token expired userid=%s, token=%s', $resetRecord['userId'], $secret));
         setFlashMessage("Password reset token not found or not valid (expired).");
-        return $response->withRedirect("/");
+        return $response->withRedirect("/login");
     }
 
     $pass1 = $request->getParam('pass1');

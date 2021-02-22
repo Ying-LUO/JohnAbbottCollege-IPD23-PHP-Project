@@ -1,0 +1,23 @@
+{% extends "admin/master.html.twig" %}
+
+{% block stylesheet %}<link rel="stylesheet" href="/styles/productlines.css" />{% endblock stylesheet%}
+{% block title %}Equipment{% endblock %}
+
+{% block content %}
+    <div class='container back p-5'>
+        {% for p in ProductLines %}
+            <a class="nav-link" href="/category/{{p.category}}" btn>
+                <div class="card_wrapper">
+                    <div class="card mx-auto mt-3 mb-3 "> <img class='img-thumbnail m-3 card_image' src="/uploads/{{p.photo}}" />
+                        <div class="card-body text-center">
+                            <div >
+                                <p class="card-title font-weight-bold">{{p.category}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock content %}
+
