@@ -10,7 +10,7 @@
     <div class="py-5 container">
         <div class="row">
             <form method="POST" class="col-md-9" read-only>
-                <p class="form-control is-invalid text-white bg-danger d-none" id="err"></p>
+                <p class="form-control text-danger" id="err"></p>
                 {% if errors %}
                     {% for e in errors %}
                         <p class="form-control is-invalid text-white bg-danger">{{ e }}</p>

@@ -348,8 +348,8 @@ $app->post('/contact', function ($request, $response, $args) {
     $lastName = $request->getParam('lastName');
     $email = $request->getParam('email');
     $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
-    if ($user) { // send email
-
+    if ($user) {
+        // TODO: send email
     }
 });
 

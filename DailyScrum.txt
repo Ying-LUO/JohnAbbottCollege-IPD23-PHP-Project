@@ -163,16 +163,43 @@ Khalil
 
 
 
-Day 06 / 2021-02-20, 21
+Day 07 / 2021-02-20, 21
+============================
+Ying:
+1- Todo:
+	*working on the password reset mail service part
+	*working on the admin part for equipment / user CRUD
+
+2- Done
+	*finished the password reset page
+	*finished the flash message update
+
+3- Need assistant
+	
+
+Khalil
+
+1- Todo:
+	
+	* working on shopping cart
+	
+2- Done
+	
+	* fix category and session
+	* working on some styles.	
+
+3- Need assistant
+
+Day 08 / 2021-02-22
 ============================
 Ying:
 1- Todo:
 	*working on the admin part for orders
 	*working on the order page
+	*working on the paginated
+	*working on the contact sending mail
 
 2- Done
-	*finished the password reset page
-	*finished the flash message update
 	*finished the password reset mail service part
 	*finish the admin part for equipment / user CRUD
 
