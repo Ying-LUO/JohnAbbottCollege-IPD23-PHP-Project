@@ -14,11 +14,6 @@ require_once 'init.php';
 // generated random string
 $passwordPepper = 'vG3iNzWMwKARpChq5KDZ';
 
-// root page
-$app->get('/admin', function ($request, $response, $args) {
-    return $this->view->render($response, 'admin/master.html.twig');
-});
-
 // STATE 1: first display of the form
 $app->get('/register', function ($request, $response, $args) {
     return $this->view->render($response, 'register.html.twig');
@@ -90,7 +85,7 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
         $log->error(sprintf("Register failed: email %s, username %s, uid=%d", $email, $userName, $_SERVER['REMOTE_ADDR']));
         return $this->view->render($response, 'register.html.twig', [
             'errors' => $errorList,
-            'prevInput' => [
+            'user' => [
                 'firstName' => $firstName,
                 'lastName' => $lastName,
                 'userName' => $userName,
@@ -127,7 +122,30 @@ $app->post('/register', function ($request, $response, $args) use ($log) {
     }
 });
 
-//TODO: VALIDATE IF USERNAME/EMAIL IS TAKEN IN DB BY AJAX
+// used via AJAX
+$app->get('/isemailtaken/{email}', function ($request, $response, $args) use ($log) {
+    // get email address from url
+    $email = isset($args['email']) ? $args['email'] : "";
+    $record = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
+    if ($record) {
+        $log->debug(sprintf("Internal Error: duplicate email %s, uid=%d", $email, $_SERVER['REMOTE_ADDR']));
+        return $response->write("Email already in use");
+    } else {
+        return $response->write("");
+    }
+});
+
+$app->get('/isusernametaken/{username}', function ($request, $response, $args) use ($log) {
+    // get username from url
+    $username = isset($args['username']) ? $args['username'] : "";
+    $record = DB::queryFirstRow("SELECT * FROM users WHERE username=%s", $username);
+    if ($record) {
+        $log->debug(sprintf("Internal Error: duplicate username %s, uid=%d", $username, $_SERVER['REMOTE_ADDR']));
+        return $response->write("UserName already in use");
+    } else {
+        return $response->write("");
+    }
+});
 
 function verifyPasswordQuality($password) {
     if (strlen($password) < 6 || strlen($password) > 100
@@ -179,7 +197,7 @@ $app->post('/login', function ($request, $response, $args) use ($log) {
         if(strcmp($record['role'],'user') === 0){
             return $response->withRedirect("/productlines");
         }elseif(strcmp($record['role'],'admin') === 0){
-            return $response->withRedirect("/admin");
+            return $response->withRedirect("/admin/equipments/list");
         }
     }
 });
@@ -199,7 +217,7 @@ $app->get('/account', function ($request, $response, $args) use ($log){
     }
     if(isset($user)){
         $log->debug(sprintf("Trying to update my account with userName %s, %s", $user['username'], $_SERVER['REMOTE_ADDR']));
-        return $this->view->render($response, 'account.html.twig',['user' => $user]);
+        return $this->view->render($response, 'register.html.twig',['user' => $user]);
     }else{
         $log->error(sprintf("Internal Error: Cannot find userName %s\n:%s", $_SESSION['user']['username'], $_SERVER['REMOTE_ADDR']));
         return $response->withHeader("Location", "/error_internal",403);
@@ -269,7 +287,7 @@ $app->post('/account', function ($request, $response, $args) use ($log) {
 
         if ($errorList) {
             $log->error(sprintf("Account information change failed: email %s, username %s, uid=%d", $email, $userName, $_SERVER['REMOTE_ADDR']));
-            return $this->view->render($response, 'account.html.twig', [
+            return $this->view->render($response, 'register.html.twig', [
                 'errors' => $errorList,
                 'user' => [
                     'firstName' => $firstName,

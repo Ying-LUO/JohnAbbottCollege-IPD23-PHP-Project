@@ -8,6 +8,7 @@
         <thead>
         <tr class="table-primary">
             <th scope="col">ID</th>
+            <th scope="col">CATEGORY</th>
             <th scope="col">NAME</th>
             <th scope="col">RATE BY MONTH</th>
             <th scope="col">RATE BY SEASON</th>
@@ -19,6 +20,7 @@
         {% for e in equipmentList %}
             <tr>
                 <th scope="row">{{e.id}}</th>
+                <td>{{ e.category }}</td>
                 <td>{{ e.equipName }}</td>
                 <td>{{ e.rateByMonth }}</td>
                 <td>{{ e.rateBySeason }}</td>

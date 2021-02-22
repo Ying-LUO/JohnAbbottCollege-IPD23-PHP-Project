@@ -1,6 +1,7 @@
 <?php
     require_once 'vendor/autoload.php';
     require_once 'init.php';
+    require_once 'account.php';
 
     use Slim\Http\UploadedFile;
 
@@ -134,12 +135,12 @@
         if($args['id'] == 0){
             return $this->view->render($response, 'admin/equip_edit.html.twig');
         }else{
-            $equipment = DB::queryFirstRow("SELECT * FROM equipments WHERE id=%d", $args['id']);
-            if(!$equipment){
+            $originEquipment = DB::queryFirstRow("SELECT * FROM equipments WHERE id=%d", $args['id']);
+            if(!$originEquipment){
                 $response = $response->withStatus(404);
                 return $this->view->render($response, '/error_notfound.html.twig');
             }
-            return $this->view->render($response, 'admin/equip_edit.html.twig', ['e'=>$equipment]);
+            return $this->view->render($response, 'admin/equip_edit.html.twig', ['e'=>$originEquipment]);
         }
     });
 
@@ -181,11 +182,11 @@
         }
 
         $valuesList = [
-            'equipDescription' => $description, 'equipName' => $equipName,
+            'description' => $description, 'equipName' => $equipName,
             'category' => $category, 'inStock' => $itemsInStock
         ];
         if ($errorList) { // STATE 2: errors - redisplay the form
-            return $this->view->render($response, 'equip_edit.html.twig', ['errors' => $errorList, 'v' => $valuesList]);
+            return $this->view->render($response, 'admin/equip_edit.html.twig', ['errors' => $errorList, 'v' => $valuesList]);
 
 
         } else { // STATE 3: success
@@ -194,9 +195,10 @@
                 $uploadedImagePath = moveUploadedFile($directory, $uploadedImage);
             }
 
-            DB::insert('equipments', ['equipDescription' => $description, 'equipName' => $equipName,
+            DB::insert('equipments', ['description' => $description, 'equipName' => $equipName,
                 'category' => $category, 'inStock' => $itemsInStock, 'photo' => $uploadedImagePath]);
 
+            return $this->view->render($response, 'admin/equips_list.html.twig');
         }
     });
 
