@@ -335,7 +335,7 @@ $app->get('/contact', function ($request, $response, $args) use ($log){
     if(isset($_SESSION['user'])) {
         $user = DB::queryFirstRow("SELECT * FROM users WHERE id=%d", $_SESSION['user']['id']);
         if(isset($user)) {
-            $log->debug(sprintf("Trying to contact us with userName %s, %s", $user['username'], $_SERVER['REMOTE_ADDR']));
+            $log->debug(sprintf("UserName=%s is trying to contact us with, %s", $user['username'], $_SERVER['REMOTE_ADDR']));
             return $this->view->render($response, 'contact.html.twig',['user' => $user]);
         }
     }else{
@@ -343,13 +343,71 @@ $app->get('/contact', function ($request, $response, $args) use ($log){
     }
 });
 
-$app->post('/contact', function ($request, $response, $args) {
+$app->post('/contact', function ($request, $response, $args) use ($log){
     $firstName = $request->getParam('firstName');
     $lastName = $request->getParam('lastName');
     $email = $request->getParam('email');
+    $comment = $request->getParam('comment');
+    if (strlen($firstName) < 2 || strlen($firstName) > 50) {
+        $errorList['firstName'] = "First Name must be 2-50 characters long";
+        $firstName = '';
+    }
+    if (strlen($lastName) < 2 || strlen($lastName) > 50) {
+        $errorList['lastName'] = "Last Name must be 2-50 characters long";
+        $lastName = '';
+    }
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
+        $errorList['email'] = "Invalid Email";
+        $email = '';
+    }
+    if (strlen($comment) < 2 || strlen($comment) > 1000) {
+        $errorList[] = "Comments must be 2-1000 characters long";
+    }
+
     $user = DB::queryFirstRow("SELECT * FROM users WHERE email=%s", $email);
-    if ($user) {
-        // TODO: send email
+    if (!$user) {
+        $errorList[] = "Email is not from a registered User";
+    }
+    if ($errorList) {
+        $log->error(sprintf("Someone is trying to contact us: email %s, uid=%d", $email, $_SERVER['REMOTE_ADDR']));
+        return $this->view->render($response, 'contact.html.twig', [
+            'errors' => $errorList,
+            'user' => [
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'email' => $email,
+                'comment' => $comment
+            ]
+        ]);
+    } else {
+        // primitive template with string replacement
+        $emailBody = file_get_contents('templates/contact_email.html.strsub');
+        $emailBody = str_replace('NAME', $firstName . " " . $lastName, $emailBody);
+        $emailBody = str_replace('EMAIL', $email, $emailBody);
+        $emailBody = str_replace('COMMENT', $comment, $emailBody);
+
+        // OPTION 2: USING EXTERNAL SERVICE - should not land in Spam / Junk folder
+        $config = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key',
+            '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');
+        $apiInstance = new SendinBlue\Client\Api\SMTPApi(new GuzzleHttp\Client(), $config);
+
+        $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail();
+        $sendSmtpEmail->setSubject("Comments From User");
+        $sendSmtpEmail->setSender(new \SendinBlue\Client\Model\SendSmtpEmailSender(
+            ['name' => $user['username'], 'email' => 'noreply@teacher.ip20.com']) );
+        $sendSmtpEmail->setTo([ new \SendinBlue\Client\Model\SendSmtpEmailTo(
+            ['name' => 'Customer Service', 'email' => 'ying.luo@johnabbottcollege.net']) ]); // TODO: CHANGE MAIL ADDRESS IF NEEDED
+        $sendSmtpEmail->setHtmlContent($emailBody);
+        //
+        try {
+            $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
+            $log->debug(sprintf('username=%s is contact us by email=%s , %s', $user['username'], $email, $_SERVER['REMOTE_ADDR']));
+            setFlashMessage("Thank you for contacting us! Our customer service representive will feedback to you soon!");
+            return $response->withRedirect("/productlines");
+        } catch (Exception $e) {
+            $log->error(sprintf("Error sending contact us email from %s\n:%s", $email, $e->getMessage()));
+            return $response->withHeader("Location", "/error_internal",403);
+        }
     }
 });
 

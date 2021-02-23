@@ -17,7 +17,6 @@
         <div class="container-fliud">
             <div class="wrapper row">
                 <div class="preview col-md-6">
-                    
                     <div class="preview-pic tab-content">
                       <div class="tab-pane active" id="pic-1"><img src="/uploads/{{selectedItem.photo}}" /></div>
                       <div class="tab-pane" id="pic-2"><img src="http://placekitten.com/400/252" /></div>
@@ -57,17 +56,14 @@
         $(document).ready(function() {
  
      $('input[name=season]').on('click',function() {
-              price = {{selectedItem.rateBySeason}};   
-                //price = encodeURIComponent(price);
+              price = {{selectedItem.rateBySeason}};
                 $('#price').html(price);
- });
+    });
 
- $('input[name=month]').on('click',function() {
-              price = {{selectedItem.rateByMonth}};
-                //price = encodeURIComponent(price);
-                $('#price').html(price);
- });
-
+     $('input[name=month]').on('click',function() {
+                  price = {{selectedItem.rateByMonth}};
+                    $('#price').html(price);
+     });
 });
 
     </script>

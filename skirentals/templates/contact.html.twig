@@ -29,27 +29,27 @@
                         <label for="inputFirstname">First name</label>
                         <input name="firstName" type="text" class="form-control" id="inputFirstname" placeholder="First name"
                                 {% if user %}
-                                    value="{{ user.firstName }}" disabled
+                                    value="{{ user.firstName }}"
                                 {% endif %}>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="inputLastname">Last name</label>
                         <input name="lastName" type="text" class="form-control" id="inputLastname" placeholder="Last name"
                                 {% if user %}
-                                    value="{{ user.lastName }}" disabled
+                                    value="{{ user.lastName }}"
                                 {% endif %}>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Email">Email address</label>
-                    <input type="email" class="form-control" id="Email" placeholder="email@example.com"
+                    <input type="email" class="form-control" id="Email" placeholder="email@example.com" name="email"
                             {% if user %}
-                                value="{{ user.email }}" disabled
+                                value="{{ user.email }}"
                             {% endif %}>
                 </div>
                 <div class="form-group">
                     <label for="Comment">Comments</label>
-                    <textarea class="form-control" rows="5" id="Comment" required ></textarea>
+                    <textarea class="form-control" rows="5" name="comment" id="Comment" required >{{ user.comment }}</textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Send Comments</button>
             </form>
