@@ -127,7 +127,7 @@
     $app->get('/cart/checkout', function ($request, $response, $args) use($log){
 
         if(!isset($_SESSION['user'])){
-            setFlashMessage("Please login first");
+            setFlashMessage("Please login first!");
             return $response->withRedirect("/login");
         }
         $cartList = DB::query("SELECT * FROM cartitems WHERE session_id=%d", session_id());
