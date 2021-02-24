@@ -87,41 +87,40 @@
         return $this->view->render($response, 'cart.html.twig',['cartList'=>$cartList]);
     });
 
-    $app->post('/cart/add/{id:[0-9]+}', function ($request, $response, $args) use($log){
+    $app->get('/cart/add/{id:[0-9]+}', function ($request, $response, $args) use($log){
         // equipment id from argument
-        if($args['id'] == 0){
-            setFlashMessage("No item selected");
+        $newCartItem = ['session_id' => session_id(), 'equipId' => $args['id'], 'quantity' => 1];
+        $itemInCart = DB::queryFirstRow("SELECT * FROM cartitems WHERE session_id=%s AND equipId=%d AND rentalType=%s", session_id(), $args['id'], 'month');
+        if($itemInCart){
+            DB::update('cartitems', ['quantity' => $itemInCart['quantity']+1], "id=%d", $itemInCart['id']);
+            $_SESSION['cart'] += 1;
+            return $response->write("Add into cart successfully");
+            $log->debug(sprintf("Equipment id %d quantity changed in cart with session id %s, uid=%d, cart:%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
         }else{
-            $newCartItem = ['session_id' => session_id(), 'equipId' => $args['id'], 'quantity' => 1];
-            $itemInCart = DB::queryFirstRow("SELECT * FROM cartitems WHERE session_id=%s AND equipId=%d AND rentalType=%s", session_id(), $args['id'], 'month');
-            if($itemInCart){
-                DB::update('cartitems', ['quantity' => $itemInCart['quantity']+1], "id=%d", $itemInCart['id']);
-                $_SESSION['cart'] += 1;
-                $log->debug(sprintf("Equipment id %d quantity changed in cart with session id %s, uid=%d, cart:%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
-            }else{
-                DB::insert('cartitems', $newCartItem);
-                $_SESSION['cart'] += 1;
-                $log->debug(sprintf("New item added into cart: equipment id %d with session id %s, uid=%d, cart:%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
-            }
-            setFlashMessage("Add into cart successfully");
-            return $response->withRedirect("/cart");
+            DB::insert('cartitems', $newCartItem);
+            $_SESSION['cart'] += 1;
+            return $response->write("Add into cart successfully");
+            $log->debug(sprintf("New item added into cart: equipment id %d with session id %s, uid=%d, cart:%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
         }
+        return $response->write("");
     });
 
-    $app->post('/cart/remove/{id:[0-9]+}', function ($request, $response, $args) use($log){
-        if($args['id'] == 0){
-            setFlashMessage("No item in cart to delete");
-        }else{
-            $todelete = DB::queryFirstRow("SELECT * FROM cartitems WHERE id=%d", $args['id']);
-            if(!$todelete){
-                $log->error(sprintf("No found item in cart to delete id=%d successfully, uid=%d", $args['id'], $_SERVER['REMOTE_ADDR']));
-                $response = $response->withStatus(404);
-                return $this->view->render($response, '/error_notfound.html.twig');
+    $app->get('/cart/remove/{id:[0-9]+}', function ($request, $response, $args) use($log){
+        // cart id from argument
+        $todelete = DB::queryFirstRow("SELECT * FROM cartitems WHERE session_id=%s AND id=%d", session_id(), $args['id']);
+        if($todelete){
+            if($todelete['quantity']>1){
+                $log->debug(sprintf("Minus quantity of id=%d from cart successfully, uid=%d", $args['id'], $_SERVER['REMOTE_ADDR']));
+                DB::update('cartitems', ['quantity' => $todelete['quantity']-1], "id=%d", $args['id']);
+                $_SESSION['cart'] -= 1;
+            }elseif ($todelete['quantity']==1){
+                $log->debug(sprintf("Delete id=%d from cart successfully, uid=%d", $args['id'], $_SERVER['REMOTE_ADDR']));
+                $_SESSION['cart'] -= 1;
+                DB::delete('cartitems', 'id=%d', $args['id']);
             }
-            DB::delete('cartitems', "id=%d", $args['id']);
-            $log->debug(sprintf("Remove id=%d from cart successfully, uid=%d", $args['id'], $_SERVER['REMOTE_ADDR']));
-            setFlashMessage("Remove from cart Successfully");
-            return $response->withRedirect("/cart");
+            return $response->write("Remove from cart successfully");
+        }else{
+            return $response->write("");
         }
     });
 
@@ -132,7 +131,7 @@
             setFlashMessage("Please login first");
             return $response->withRedirect("/login");
         }
-        $cartList = DB::query("SELECT * FROM cartitems WHERE userId=%d", $userId);
+        $cartList = DB::query("SELECT * FROM cartitems WHERE session_id=%d", session_id());
         if(!$cartList){
             $response = $response->withStatus(404);
             return $this->view->render($response, '/error_notfound.html.twig');
