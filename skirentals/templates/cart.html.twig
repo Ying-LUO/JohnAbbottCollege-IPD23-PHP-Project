@@ -3,72 +3,33 @@
 {% block title %}Shopping Cart{% endblock %}
 {% block content %}
     <a href="/productlines" class="my-2 mx-4 float-sm-left btn btn-primary active" role="button" aria-pressed="true">Continue Browsing</a>
-    <p class="form-control text-danger d-none" id="err"></p>
     <div class="table-responsive">
-        <form method="POST" class="col-md-10">
-            <table class="table table-hover">
-                <thead>
-                <tr class="table-primary">
-                    <th scope="col">ID</th>
-                    <th scope="col">EQUIPMENT CATEGORY</th>
-                    <th scope="col">EQUIPMENT NAME</th>
-                    <th scope="col">QUANTITY</th>
-                    <th scope="col">RENTAL TYPE</th>
-                    <th scope="col">PRICE</th>
-                    <th scope="col">ACTIONS</th>
+        <table class="table table-hover">
+            <thead>
+            <tr class="table-primary">
+                <th scope="col">ID</th>
+                <th scope="col">EQUIPMENT CATEGORY</th>
+                <th scope="col">EQUIPMENT NAME</th>
+                <th scope="col">QUANTITY</th>
+                <th scope="col">RENTAL TYPE</th>
+                <th scope="col">ACTIONS</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for c in cartList %}
+                <tr>
+                    <th scope="row">{{ c.id }}</th>
+                    <td>{{ c.category }}</td>
+                    <td>{{ c.equipName }}</td>
+                    <td>{{ c.quantity }}</td>
+                    <td>{{ c.rentalType }}</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm active" role="button" aria-pressed="true" href="/remove/{{ c.id }}">Delete From Cart</a>
+                        <a class="btn btn-primary btn-sm active" role="button" aria-pressed="true" href="/checkout/{{ c.userId }}">Check Out</a>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for c in cartList %}
-                    <tr>
-                        <th scope="row" name="cartId">{{ c.id }}</th>
-                        <td>{{ c.category }}</td>
-                        <td>{{ c.equipName }}</td>
-                        <td name="quantity">{{ c.quantity }}</td>
-                        <td>{{ c.rentalType }}</td>
-                        {% if c.rentalType == 'month' %}
-                            <td name="rentalPrice">{{ c.rateByMonth }}</td>
-                        {% else %}
-                            <td>{{ c.rateBySeason }}</td>
-                        {% endif %}
-                        <td>
-                            <a id="remove" class="btn btn-primary btn-sm active font-weight-bold" role="button" aria-pressed="true" href="/cart/remove/{{ c.id }}">-</a><span class="d-none" id="cartId" >{{ c.id }}</span>
-                            <a id="add" class="btn btn-primary btn-sm active font-weight-bold" role="button" aria-pressed="true" href="/cart/add/{{ c.equipId }}">+</a><span class="d-none" id="equipId" >{{ c.equipId }}</span>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <button class="my-3 btn btn-lg float-sm-right btn-primary" type="submit">Check out</button>
-        </form>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
-
-{% block scripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $err =  $('#err');
-            $('#remove').on('click', function (){
-                var cartId = $('#cartId').val();
-                $err.load("/cart/remove/" + cartId);
-                if($err.is(':empty')){
-                    $err.removeClass("d-none");
-                }else{
-                    $err.addClass("d-none");
-                }
-            });
-
-            $("#add").on('click', function (){
-                var equipId = $('#equipId').val();
-                $err.load("/cart/add/" + equipId);
-                if($err.is(':empty')){
-                    $err.removeClass("d-none");
-                }else{
-                    $err.addClass("d-none");
-                }
-            });
-        });
-
-    </script>
-{% endblock scripts %}
