@@ -6,21 +6,19 @@
 {% block content %}
 <div class='container back p-5'>
     {% for e in equipList %}
-    <form method="POST" action="/cart/add/{{ e.id }}" class="col-md-12">
         <div class="card_wrapper">
             <div class="card mx-auto mt-3 mb-3 "> <img class='mx-auto img-thumbnail m-3 card_image' src="/uploads/{{e.photo}}" width="auto" height="auto" />
                 <div class="card-body text-center">
                     <div >
                         <h5 class="card-title font-weight-bold">{{e.equipName}}</h5>
                         <p class="d-flex justify-content-center">
-                            <a href="/itemdetails/{{ e.id }}" class="btn details px-auto mr-2">view details</a>
-                            <button class="btn cart px-auto ml-2" >ADD TO CART</button>
+                            <a href="/itemdetails/{{ e.id }}" class="btn details px-auto mr-2">View Details</a>
+                            <a href="/cart/add/{{ e.id }}" class="btn cart px-auto mr-2">ADD TO CART</a>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
     {% endfor %}
 </div>
 {% endblock content %}
