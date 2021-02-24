@@ -124,10 +124,9 @@
         }
     });
 
-    $app->post('/cart/checkout', function ($request, $response, $args) use($log){
+    $app->get('/cart/checkout', function ($request, $response, $args) use($log){
 
-        $userId =  $args['userId'];
-        if(!isset($userId)){
+        if(!isset($_SESSION['user'])){
             setFlashMessage("Please login first");
             return $response->withRedirect("/login");
         }
@@ -136,6 +135,6 @@
             $response = $response->withStatus(404);
             return $this->view->render($response, '/error_notfound.html.twig');
         }
-        return $this->view->render($response, 'cart.html.twig',['cartList'=>$cartList]);
+        return $this->view->render($response, 'order.html.twig',['orderList'=>$cartList]);
     });
   
