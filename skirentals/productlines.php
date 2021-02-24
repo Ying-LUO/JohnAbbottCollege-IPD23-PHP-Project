@@ -74,7 +74,8 @@
 
     $app->get('/cart', function ($request, $response, $args) use($log){
         if (session_id()) {
-            $cartList = DB::query("SELECT * FROM cartitems AS C LEFT JOIN equipments AS E ON C.equipId = E.id WHERE session_id=%s", session_id());
+            $cartList = DB::query("SELECT C.id, equipId, quantity, rentalType, equipName, description, rateByMonth, rateBySeason, photo, inStock, category
+                                    FROM cartitems AS C LEFT JOIN equipments AS E ON C.equipId = E.id WHERE session_id=%s", session_id());
         }else{
             setFlashMessage("Oops! You have not put anything in shopping cart, keep shopping");
             return $response->withRedirect("/productionlines");
