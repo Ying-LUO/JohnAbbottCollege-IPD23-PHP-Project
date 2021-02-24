@@ -72,7 +72,6 @@
         }
     });
 
-
     $app->get('/cart', function ($request, $response, $args) use($log){
         if (session_id()) {
             $cartList = DB::query("SELECT * FROM cartitems AS C LEFT JOIN equipments AS E ON C.equipId = E.id WHERE session_id=%s", session_id());
@@ -99,7 +98,7 @@
         }else{
             DB::insert('cartitems', $newCartItem);
             $_SESSION['cart'] += 1;
-            return $response->write("Add into cart successfully");
+            return $response->write("Add into cart successfully!");
             $log->debug(sprintf("New item added into cart: equipment id %d with session id %s, uid=%d, cart:%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
         }
         return $response->write("");
@@ -118,7 +117,7 @@
                 $_SESSION['cart'] -= 1;
                 DB::delete('cartitems', 'id=%d', $args['id']);
             }
-            return $response->write("Remove from cart successfully");
+            return $response->write("Remove from cart successfully!");
         }else{
             return $response->write("");
         }
