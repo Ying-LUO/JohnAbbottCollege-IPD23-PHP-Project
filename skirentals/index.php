@@ -26,7 +26,6 @@ $app->get('/', function ($request, $response, $args) {
 require_once 'account.php';
 require_once "admin.php";
 require_once "productlines.php";
-require_once "cart.php";
 
 // Run app - must be the last operation
 // if you forget it all you'll see is a blank page

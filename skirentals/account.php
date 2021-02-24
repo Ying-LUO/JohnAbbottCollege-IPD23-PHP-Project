@@ -14,6 +14,9 @@ require_once 'init.php';
 // generated random string
 $passwordPepper = 'vG3iNzWMwKARpChq5KDZ';
 
+$app->get('/', function ($request, $response, $args) {
+    return $response->withRedirect("/productlines");
+});
 // STATE 1: first display of the form
 $app->get('/register', function ($request, $response, $args) {
     return $this->view->render($response, 'register.html.twig');
