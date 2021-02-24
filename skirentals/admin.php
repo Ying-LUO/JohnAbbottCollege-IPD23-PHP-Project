@@ -165,6 +165,7 @@
         }else{
             $originEquipment = DB::queryFirstRow("SELECT * FROM equipments WHERE id=%d", $args['id']);
             if(!$originEquipment){
+                $log->error(sprintf("NO found equipment id=%d to delete, uid=%d", $args['id'], $_SERVER['REMOTE_ADDR']));
                 $response = $response->withStatus(404);
                 return $this->view->render($response, '/error_notfound.html.twig');
             }

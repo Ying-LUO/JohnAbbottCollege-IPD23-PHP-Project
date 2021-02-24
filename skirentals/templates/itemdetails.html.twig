@@ -11,6 +11,11 @@
 {% block content %}
     <div class="py-5 container">
         <div class="row">
+            {% if errors %}
+            {% for e in errors %}
+                <p class="form-control is-invalid text-white bg-danger">{{ e }}</p>
+            {% endfor %}
+            {% endif %}
             <form method="POST" class="col-md-12">
                 <div class="form-row">
                     <div class="preview col-md-6">
@@ -32,7 +37,12 @@
                             <label class="btn btn-outline-primary" for="season">Rental By Season</label>
                         </div>
                         <h4 class="price mt-3">price: <span>$</span><span id="price">{{selectedItem.rateByMonth}}</span></h4>
-
+                        <div class="form-group row">
+                            <label for="Quantity" class="col-2 col-form-label">Quantity</label>
+                            <div class="col-10">
+                                <input class="form-control col-md-3" type="number" name="quantity" value="1" min="1" max="{{ selectedItem.inStock }}" id="Quantity">
+                            </div>
+                        </div>
                         <p class="vote"><strong>price</strong> based on selected rental type</p>
                         <div class="action">
                             <button class="add-to-cart btn btn-sm" type="submit">add to cart</button>
