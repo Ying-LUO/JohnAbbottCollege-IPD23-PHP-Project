@@ -465,7 +465,8 @@ $app->post('/passreset_request', function ($request, $response, $args) use ($log
                 $log->error(sprintf("Error sending password reset email to %s\n:%s", $email, $e->getMessage()));
                 return $response->withHeader("Location", "/error_internal",403);
             }
-        }
+        }setFlashMessage("This email is not from a registered user");
+        return $response->withRedirect("/register");
     }
 });
 
