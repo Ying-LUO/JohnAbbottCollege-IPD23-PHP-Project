@@ -209,6 +209,7 @@ $app->get('/logout', function ($request, $response, $args) use ($log) {
     if(isset($_SESSION['user'])){
         $log->debug(sprintf("Logout successful for uid=%d, from %s", @$_SESSION['user']['id'], $_SERVER['REMOTE_ADDR']));
         unset($_SESSION['user']);
+        unset($_SESSION['cart']);
         setFlashMessage("You have been logout!");
         return $response->withRedirect("/productlines");
     }

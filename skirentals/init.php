@@ -9,7 +9,6 @@ require_once 'vendor/autoload.php';
 
 session_start();
 
-
 // create a log channel
 $log = new Logger('main');
 $log->pushHandler(new StreamHandler('logs/everything.log', Logger::DEBUG));
@@ -85,6 +84,7 @@ $container['view'] = function ($c) {
     ]);
     // This value will be set for all twig templates
     $view->getEnvironment()->addGlobal('userSession', isset($_SESSION['user']) ? $_SESSION['user'] : null);
+    $view->getEnvironment()->addGlobal('totalCart', isset($_SESSION['cart']) ? $_SESSION['cart'] : null);
     // Instantiate and add Slim specific extension
     $router = $c->get('router');
     $uri = \Slim\Http\Uri::createFromEnvironment(new \Slim\Http\Environment($_SERVER));

@@ -22,7 +22,7 @@
 
     $app->get('/itemdetails/{id:[0-9]+}', function ($request, $response, $args) {
 
-         $selectedItem = DB::queryFirstRow("SELECT * FROM equipments WHERE id=%i", $args['id']);
+         $selectedItem = DB::queryFirstRow("SELECT * FROM equipments WHERE id=%d", $args['id']);
 
        return $this->view->render($response, 'itemdetails.html.twig', ['selectedItem' =>  $selectedItem]);
     });
@@ -30,7 +30,7 @@
     $app->post('/itemdetails/{id:[0-9]+}', function ($request, $response, $args) use ($log){
         // TODO: WHAT IF NO SESSION ID?
         if($args['id']){
-            $selectedEquip = DB::queryFirstRow("SELECT * FROM equipments WHERE id=%i", $args['id']);
+            $selectedEquip = DB::queryFirstRow("SELECT * FROM equipments WHERE id=%d", $args['id']);
         }
         $errorList = [];
         if (session_id() && $selectedEquip) {
@@ -56,13 +56,15 @@
             } else {
                 // add to cart
                 $newCartItem = ['session_id' => session_id(), 'equipId' => $args['id'], 'quantity' => $quantity, 'rentalType' => $rentalType];
-                $itemInCart = DB::queryFirstRow("SELECT * FROM cartItems WHERE session_id=%i AND equipId=%d AND rentalType=%s", session_id(), $args['id'], $rentalType);
+                $itemInCart = DB::queryFirstRow("SELECT * FROM cartItems WHERE session_id=%s AND equipId=%d AND rentalType=%s", session_id(), $args['id'], $rentalType);
                 if($itemInCart){
                     DB::update('cartItems', ['quantity' => $itemInCart['quantity']+$quantity], "id=%d", $itemInCart['id']);
-                    $log->debug(sprintf("Equipment id %d quantity changed in cart with session id %s, uid=%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR']));
+                    $_SESSION['cart'] += $quantity;
+                    $log->debug(sprintf("Equipment id %d quantity changed in cart with session id %s, uid=%d, cart=%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
                 }else{
                     DB::insert('cartItems', $newCartItem);
-                    $log->debug(sprintf("New item added into cart: equipment id %d with session id %s, uid=%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR']));
+                    $_SESSION['cart'] += $quantity;
+                    $log->debug(sprintf("New item added into cart: equipment id %d with session id %s, uid=%d, cart=%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
                 }
                 setFlashMessage("Add into cart successfully");
                 return $response->withRedirect("/category/" . $selectedEquip['category']);
@@ -91,13 +93,15 @@
             setFlashMessage("No item selected");
         }else{
             $newCartItem = ['session_id' => session_id(), 'equipId' => $args['id'], 'quantity' => 1];
-            $itemInCart = DB::queryFirstRow("SELECT * FROM cartItems WHERE session_id=%i AND equipId=%d AND rentalType=%s", session_id(), $args['id'], 'month');
+            $itemInCart = DB::queryFirstRow("SELECT * FROM cartItems WHERE session_id=%s AND equipId=%d AND rentalType=%s", session_id(), $args['id'], 'month');
             if($itemInCart){
                 DB::update('cartItems', ['quantity' => $itemInCart['quantity']+1], "id=%d", $itemInCart['id']);
-                $log->debug(sprintf("Equipment id %d quantity changed in cart with session id %s, uid=%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR']));
+                $_SESSION['cart'] += 1;
+                $log->debug(sprintf("Equipment id %d quantity changed in cart with session id %s, uid=%d, cart:%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
             }else{
                 DB::insert('cartItems', $newCartItem);
-                $log->debug(sprintf("New item added into cart: equipment id %d with session id %s, uid=%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR']));
+                $_SESSION['cart'] += 1;
+                $log->debug(sprintf("New item added into cart: equipment id %d with session id %s, uid=%d, cart:%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
             }
             setFlashMessage("Add into cart successfully");
             return $response->withRedirect("/cart");
