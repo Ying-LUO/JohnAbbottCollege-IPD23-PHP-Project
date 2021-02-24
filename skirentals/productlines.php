@@ -56,13 +56,13 @@
             } else {
                 // add to cart
                 $newCartItem = ['session_id' => session_id(), 'equipId' => $args['id'], 'quantity' => $quantity, 'rentalType' => $rentalType];
-                $itemInCart = DB::queryFirstRow("SELECT * FROM cartItems WHERE session_id=%s AND equipId=%d AND rentalType=%s", session_id(), $args['id'], $rentalType);
+                $itemInCart = DB::queryFirstRow("SELECT * FROM cartitems WHERE session_id=%s AND equipId=%d AND rentalType=%s", session_id(), $args['id'], $rentalType);
                 if($itemInCart){
-                    DB::update('cartItems', ['quantity' => $itemInCart['quantity']+$quantity], "id=%d", $itemInCart['id']);
+                    DB::update('cartitems', ['quantity' => $itemInCart['quantity']+$quantity], "id=%d", $itemInCart['id']);
                     $_SESSION['cart'] += $quantity;
                     $log->debug(sprintf("Equipment id %d quantity changed in cart with session id %s, uid=%d, cart=%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
                 }else{
-                    DB::insert('cartItems', $newCartItem);
+                    DB::insert('cartitems', $newCartItem);
                     $_SESSION['cart'] += $quantity;
                     $log->debug(sprintf("New item added into cart: equipment id %d with session id %s, uid=%d, cart=%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
                 }
@@ -93,13 +93,13 @@
             setFlashMessage("No item selected");
         }else{
             $newCartItem = ['session_id' => session_id(), 'equipId' => $args['id'], 'quantity' => 1];
-            $itemInCart = DB::queryFirstRow("SELECT * FROM cartItems WHERE session_id=%s AND equipId=%d AND rentalType=%s", session_id(), $args['id'], 'month');
+            $itemInCart = DB::queryFirstRow("SELECT * FROM cartitems WHERE session_id=%s AND equipId=%d AND rentalType=%s", session_id(), $args['id'], 'month');
             if($itemInCart){
-                DB::update('cartItems', ['quantity' => $itemInCart['quantity']+1], "id=%d", $itemInCart['id']);
+                DB::update('cartitems', ['quantity' => $itemInCart['quantity']+1], "id=%d", $itemInCart['id']);
                 $_SESSION['cart'] += 1;
                 $log->debug(sprintf("Equipment id %d quantity changed in cart with session id %s, uid=%d, cart:%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
             }else{
-                DB::insert('cartItems', $newCartItem);
+                DB::insert('cartitems', $newCartItem);
                 $_SESSION['cart'] += 1;
                 $log->debug(sprintf("New item added into cart: equipment id %d with session id %s, uid=%d, cart:%d", $args['id'], session_id(), $_SERVER['REMOTE_ADDR'], $_SESSION['cart']));
             }
