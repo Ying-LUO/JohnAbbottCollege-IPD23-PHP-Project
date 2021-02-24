@@ -163,7 +163,7 @@ Khalil
 
 
 
-Day 07 / 2021-02-20, 21
+Day 07, 08 / 2021-02-20, 21
 ============================
 Ying:
 1- Todo:
@@ -193,7 +193,7 @@ Khalil
 
 3- Need assistant
 
-Day 08 / 2021-02-22
+Day 09 / 2021-02-22
 ============================
 Ying:
 1- Todo:
@@ -220,6 +220,30 @@ Khalil
 	
 	* finising 20% of item details
 	* working on some styles.	
+
+3- Need assistant
+
+Day 10 / 2021-02-23
+============================
+Ying:
+1- Todo:
+	*working on order page
+
+2- Done
+	*working on the cart page
+	*working on the contact sending mail
+
+3- Need assistant
+	
+
+Khalil
+
+1- Todo:
+	*presentation preparation
+	*refactor some styles
+	
+2- Done
+	*working on shopping cart
 
 3- Need assistant
 
