@@ -135,6 +135,18 @@
             $response = $response->withStatus(404);
             return $this->view->render($response, '/error_notfound.html.twig');
         }
-        return $this->view->render($response, 'order.html.twig',['orderList'=>$cartList]);
+        foreach ($cartList as $cartitem) {
+            $price = DB::queryFirstField("SELECT %s FROM equipments WHERE id=%d", $cartitem['rentalType']=='month'? "rateByMonth" : "rateBySeason" , $cartitem['equipId']);
+            $newOrderItem = ['userId'=>$_SESSION['user']['id'], 'equipId' => $cartitem['equipId'], 'quantity' => $cartitem['quantity'], 'rentalPrice' => $price];
+            DB::insertUpdate('orderitems', $newOrderItem, 'userId=%d', $_SESSION['user']['id']);
+        }
+        $orderList = DB::query("SELECT O.id, O.userId, O.equipId, O.quantity, O.rentalPrice, 
+                                U.firstName, U.lastName, U.email, U.username, U.phone, 
+                                U.street, U.city, U.province, U.postalCode, E.equipName, E.category 
+                                FROM orderitems AS O 
+                                    LEFT JOIN users AS U ON O.userId = U.id 
+                                    LEFT JOIN equipments AS E ON O.equipId = E.id
+                                WHERE O.userId=%s", $_SESSION['user']['id']);
+        return $this->view->render($response, 'order.html.twig',['orderList'=>$orderList]);
     });
   

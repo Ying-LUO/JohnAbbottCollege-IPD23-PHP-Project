@@ -9,36 +9,36 @@
                 <thead>
                 <tr class="table-primary">
                     <th scope="col">ID</th>
-                    <th scope="col">EQUIPMENT CATEGORY</th>
+                    <th scope="col">USER NAME</th>
+                    <th scope="col">EMAIL</th>
+                    <th scope="col">PHONE</th>
                     <th scope="col">EQUIPMENT NAME</th>
-                    <th scope="col">QUANTITY</th>
-                    <th scope="col">RENTAL TYPE</th>
+                    <th scope="col">CATEGORY</th>
                     <th scope="col">PRICE</th>
+                    <th scope="col">QUANTITY</th>
                     <th scope="col">ACTIONS</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for c in orderList %}
+                {% for o in orderList %}
                     <tr>
-                        <th scope="row">{{ c.id }}</th>
-                        <td>{{ c.category }}</td>
-                        <td>{{ c.equipName }}</td>
-                        <td>{{ c.quantity }}</td>
-                        <td>{{ c.rentalType }}</td>
-                        {% if c.rentalType == 'month' %}
-                            <td>{{ c.rateByMonth }}</td>
-                        {% else %}
-                            <td>{{ c.rateBySeason }}</td>
-                        {% endif %}
+                        <th scope="row">{{ o.id }}</th>
+                        <td>{{ o.firstName ~ " " ~ o.lastName }}</td>
+                        <td>{{ o.email }}</td>
+                        <td>{{ o.phone }}</td>
+                        <td>{{ o.equipName }}</td>
+                        <td>{{ o.category }}</td>
+                        <td>{{ o.price }}</td>
+                        <td>{{ 0.quanity }}</td>
                         <td>
-                            <a id="remove" class="btn btn-primary btn-sm active font-weight-bold" role="button" aria-pressed="true" href="/cart/remove/{{ c.id }}">-</a><span class="d-none" id="cartId" >{{ c.id }}</span>
-                            <a id="add" class="btn btn-primary btn-sm active font-weight-bold" role="button" aria-pressed="true" href="/cart/add/{{ c.equipId }}">+</a><span class="d-none" id="equipId" >{{ c.equipId }}</span>
+                            <a id="remove" class="btn btn-primary btn-sm active font-weight-bold" role="button" aria-pressed="true" href="/order/remove/{{ o.id }}">-</a><span class="d-none" id="orderIdremove" >{{ c.id }}</span>
+                            <a id="add" class="btn btn-primary btn-sm active font-weight-bold" role="button" aria-pressed="true" href="/order/add/{{ o.id }}">+</a><span class="d-none" id="orderIdadd" >{{ c.equipId }}</span>
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-        <a href="/cart/checkout" class="mx-5 btn btn-lg float-sm-right btn-primary" role="button" aria-pressed="true">Pay</a>
+        <a href="/order/pay" class="mx-5 btn btn-lg float-sm-right btn-primary" role="button" aria-pressed="true">Pay</a>
     </div>
 {% endblock %}
 
@@ -48,8 +48,8 @@
         $(document).ready(function() {
             $err =  $('#err');
             $('#remove').on('click', function (){
-                var cartId = $('#cartId').val();
-                $err.load("/cart/remove/" + cartId);
+                var orderId = $('#orderIdremove').val();
+                $err.load("/order/remove/" + orderId);
                 if($err.is(':empty')){
                     $err.removeClass("d-none");
                 }else{
@@ -58,8 +58,8 @@
             });
 
             $("#add").on('click', function (){
-                var equipId = $('#equipId').val();
-                $err.load("/cart/add/" + equipId);
+                var orderId = $('#orderIdadd').val();
+                $err.load("/order/add/" + orderId);
                 if($err.is(':empty')){
                     $err.removeClass("d-none");
                 }else{
